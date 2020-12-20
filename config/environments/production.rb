@@ -101,8 +101,8 @@ Rails.application.configure do
       :address              => "smtp.gmail.com",
       :port                 => 587,
       :domain               => "gmail.com",
-      :user_name            => ENV['SMPT_USER'],
-      :password             => ENV['SMPT_PASSWORD'],
+      :user_name            => Rails.application.secrets.smtp_user,
+      :password             => Rails.application.secrets.smtp_password,
       :authentication       => "plain",
       :enable_starttls_auto => true
   }

@@ -1,8 +1,8 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.11.0"
 
-set :application, "profiler_backend"
-set :repo_url, "git@github.com:bilawal-liaqat/profiler_backend.git"
+set :application, "profiler_life"
+set :repo_url, "git@github.com:triple2digital/ProfilerLife.git"
 
 
 set :rbenv_type, :system # or :system, depends on your rbenv setup
@@ -19,11 +19,13 @@ set :rbenv_roles, :all # default value
 
 
 #
-set :ssh_options, {
-    #keys: %w(~/.ssh/aws-ec2.pem),
-    forward_agent: true
-    #  auth_methods: %w(password)
-}
+# set :ssh_options, {
+#     #keys: %w(~/.ssh/aws-ec2.pem),
+#     forward_agent: true
+#     #  auth_methods: %w(password)
+# }
+
+set :ssh_options,     { forward_agent: true, keys: "~/markmate/ProKey.pem" }
 
 # set ssh_options: {
 #     keys: %w(/home/rashidromi/Downloads/ProfilerDevelopment.pem),

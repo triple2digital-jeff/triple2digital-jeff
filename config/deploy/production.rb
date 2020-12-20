@@ -1,5 +1,6 @@
 set :stage, :production
-set :deploy_to, '/home/ubuntu/rails_app/profiler_backend'
+#set :deploy_to, '/home/ubuntu/rails_app/profiler_backend'
+set :deploy_to, "/var/www/profiler_life"
 
 server '35.180.3.103', port: 22, user: 'ubuntu', roles: %w{app db web}
 set :use_sudo, true
