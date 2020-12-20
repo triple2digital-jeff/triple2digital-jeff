@@ -1,0 +1,24 @@
+<div class="home-main-content">
+  <div class="box">
+    <div class="box-header text-center">
+      <h2 class="box-title m-10">LIST OF CATEGORIES</h2>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+      <%= render_search_and_new_btn(Category.filter_fields, categories_path, new_category_path, 'Create New Category', true) %>
+      <table id="dttb" class="table table-bordered table-hover">
+        <thead>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: :category, collection: @categories %>
+        </tbody>
+      </table>
+      <%= paginate @categories %>
+    </div>
+  </div>
+</div>

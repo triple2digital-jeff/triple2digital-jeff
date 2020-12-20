@@ -1,0 +1,111 @@
+.text-center{
+    text-align: center;
+}
+.edit_user_icon{
+    font-size: 20px;
+}
+.remove_icon{
+    color: red;
+    margin: 0px 0px 0px 20px;
+}
+.create_button{
+    position: absolute;
+    right: 0px;
+    z-index: 9999;
+}
+.alert-info{
+    background: #31708f;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered li{
+    color: black;
+}
+
+.select2-container .select2-selection--single{
+    height: 34px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    height: 34px;
+}
+.custom-container {
+    display: inline;
+    position: relative;
+    padding-left: 26px;
+    padding-right: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.custom-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #ababab;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.custom-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.custom-container input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.custom-container:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.custom-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.custom-container .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+}
+#dttb tr{
+    cursor: pointer;
+}
+#error_box{
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    background-image: none !important;
+}
+#ticket_purchase_form .error{
+    color: #ff0000;
+}
+
+.alert-danger{
+    background-image: none !important;
+    color: #FFFFFF !important;
+    background-color: #DD4B48 !important;
+}

@@ -1,0 +1,10 @@
+colors = <%= raw @services_data.size.times.map {|a| "%06x" % (rand * 0xffffff)} %>
+var newDataObject = {
+    labels: <%= raw @services_data.keys %>,
+    datasets: [{
+        data: <%= @services_data.values %>,
+        backgroundColor: colors
+    }]
+};
+servicesChart.data = newDataObject;
+window.servicesChart.update();

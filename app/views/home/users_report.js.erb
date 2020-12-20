@@ -1,0 +1,10 @@
+var newDataObject = {
+    labels: <%= raw (Date.parse(@users_from).upto(Date.parse(@users_to))).map{ |date| date.strftime("%b %d") } %>,
+    datasets: [{
+        label: '# of Registrations',
+        data: <%= @user_data %>,
+        borderWidth: 1
+    }]
+};
+usersChart.data = newDataObject;
+window.usersChart.update();

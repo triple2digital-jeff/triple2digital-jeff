@@ -1,0 +1,61 @@
+<div class="hold-transition login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="/home"><%= image_tag('profiler-log.png') %></a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+      <p class="login-box-msg">Sign in to continue!</p>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-group has-feedback">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', placeholder: "Email" %>
+          <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        </div>
+        <div class="form-group has-feedback">
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "Password" %>
+          <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="checkbox icheckf">
+              <label>
+                <% if devise_mapping.rememberable? %>
+                    <div class="field">
+                      <%= f.check_box :remember_me %>
+                      <%= f.label :remember_me %>
+                    </div>
+                <% end %>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-lg-12">
+              <%= f.submit "Log in", class: "btn btn-primary btn-block btn-flat" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div id="app_links" style="margin-top: 10%; text-align: center">
+        <div style="font-size: 22px; padding: 21px">You can install mobile app using following links.</div>
+        <span>
+   <%= link_to "https://itunes.apple.com/us/app/profiler-life/id1251573847?mt=8" do %>
+     <%= image_tag('apple.png')%>
+    <% end %>
+  </span>
+
+        <span>
+    <%= link_to "https://play.google.com/store/apps/details?id=com.ProfilerLife.Profiler" do %>
+        <%= image_tag('g.png')%>
+    <% end %>
+  </span>
+      </div>
+
+    </div>
+
+    <!-- /.login-box-body -->
+  </div>
+</div>

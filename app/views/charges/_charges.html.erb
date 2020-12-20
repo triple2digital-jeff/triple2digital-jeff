@@ -1,0 +1,24 @@
+  <div class="box-header text-center">
+    <h2 class="box-title m-10">LIST OF charges</h2>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <%#= render_search_and_new_btn(Event.filter_fields, events_path, new_event_path, 'Create New Event', false) %>
+    <table id="dttb" class="table table-bordered table-hover">
+      <thead>
+      </tr>
+      <tr>
+        <th>No</th>
+        <th>Attendee</th>
+        <th>Event</th>
+        <th>Organizer</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render partial: :charge, collection: @charges %>
+      </tbody>
+    </table>
+    <%= paginate(@charges, remote: true) %>
+  </div>

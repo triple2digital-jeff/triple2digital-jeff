@@ -1,0 +1,53 @@
+<div class="home-main-content">
+  <section class="caption-home-banner">
+    <div class="containedfr">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><%= @user.first_name %></td>
+          <td><%= @user.last_name %></td>
+          <td><%= @user.fullname %></td>
+          <td><%= @user.email %></td>
+          <td><%= @user.phone %></td>
+          <td class="last links">
+            <ul class="inline list-inline">
+              <li title="Show" rel="tooltip" class="icon show_member_link ">
+                <a class="pjax" href="http://localhost:3001/admin/user/9">
+                  <i class="icon-info-sign"></i>
+                  <span style="display:none">Show</span>
+                </a>
+              </li>
+
+              <li title="Edit" rel="tooltip" class="icon edit_member_link ">
+                <a class="pjax" href="http://localhost:3001/admin/user/9/edit">
+                  <i class="icon-pencil"></i>
+                  <span style="display:none">Edit</span>
+                </a>
+              </li>
+
+              <li title="Delete" rel="tooltip" class="icon delete_member_link ">
+                <a class="pjax" href="http://localhost:3001/admin/user/9/delete">
+                  <i class="icon-remove"></i>
+                  <span style="display:none">Delete</span>
+                </a>
+              </li>
+            </ul>
+          </td>
+          <td><%= link_to("Edit user", edit_user_path(@user), :class => 'button-xs')%></td>
+          <td><%= link_to("Delete user", user_path(@user), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'button-xs') unless @user == current_user %></td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

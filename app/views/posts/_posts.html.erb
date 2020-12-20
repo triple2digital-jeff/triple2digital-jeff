@@ -1,0 +1,24 @@
+  <div class="box-header text-center">
+    <h2 class="box-title m-10">LIST OF EVENTS</h2>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <%= render_search_and_new_btn(Post.filter_fields, posts_path, new_post_path, 'Create New Post', false) %>
+    <table id="dttb" class="table table-bordered table-hover">
+      <thead>
+      </tr>
+      <tr>
+        <th>No</th>
+        <th>Description</th>
+        <th>Hidden</th>
+        <th>Type</th>
+        <th>Privacy</th>
+        <th>User</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render partial: :post, collection: @posts %>
+      </tbody>
+    </table>
+    <%= paginate(@posts, remote: true) %>
+  </div>

@@ -1,0 +1,9 @@
+<tr data-link="<%= event_path(outgoing_payment.event) %>">
+  <td><%= outgoing_payment.id %></td>
+  <td><%= outgoing_payment.event.try(:title) %></td>
+  <td><%= outgoing_payment.user.try(:fullname) %></td>
+  <td><%= outgoing_payment.amount/100 %></td>
+  <td><button type="button" class="btn btn-success">Paid</button>
+  <td><%= outgoing_payment.created_at.strftime('%B %d, %Y, %H:%M') %></td>
+  </td>
+</tr>

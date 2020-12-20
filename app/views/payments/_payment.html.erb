@@ -1,0 +1,8 @@
+<tr data-link="<%= payment_path(payment) %>">
+  <td><%= payment.id %></td>
+  <td><%= payment.user.try(:fullname) %></td>
+  <td><%= payment.amount/100 %></td>
+  <td><%= payment.created_at.strftime('%B %d, %Y, %H:%M') %></td>
+  <td><button type="button" class="btn btn-success">Paid</button>
+  </td>
+</tr>

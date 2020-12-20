@@ -1,0 +1,80 @@
+<%= form_with(model: @event, local: true, class: 'form-horizontal event') do |f| %>
+    <% if @event.errors.any? %>
+        <div id="error_expl" class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <% @event.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+    <% end %>
+    <div class="box-body">
+      <div class="col-md-6 col-xs-offset-2">
+
+        <div class="form-group">
+          <%= f.label :title, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :title, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :description, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_area :description, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :start_date, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :start_date, class: 'form-control datepicker' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :end_date, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :end_date, class: 'form-control datepicker' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :owner_id, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.select :owner_id, User.dropdown_options, {selected: @event.owner_id}, class: 'select2 form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :is_paid, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.check_box :is_paid, checked: @event.new_record? ? true : @event.is_paid? %>
+          </div>
+        </div>
+        <div class="form-group price_container">
+          <%= f.label :price, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :price, class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class=" box-footer">
+      <div class="col-md-6 col-xs-offset-2 pull-right">
+        <%= f.submit nil, :class => 'btn btn-info' %>
+        <%= link_to t('.cancel', :default => t("helpers.links.cancel")), events_path, :class => 'btn btn-default' %>
+      </div>
+    </div>
+
+<% end %>
+
+
+<script>
+  $(document).ready(function(){
+      $('#event_is_paid').on('click', function(){
+          $('.price_container').toggle(1300,'easeOutQuint');
+      });
+  });
+</script>

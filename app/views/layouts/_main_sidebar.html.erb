@@ -1,0 +1,88 @@
+<section class="sidebar">
+  <!-- Sidebar user panel -->
+
+
+  <!-- sidebar menu: : style can be found in sidebar.less -->
+  <ul class="sidebar-menu" data-widget="tree">
+    <li class="header">ADMIN PANEL</li>
+    <li ><a href="/home"><i class="fa fa-dashboard"></i> <span> Home</span></a></li>
+    <li class="<%= is_current_navigation_sidebar?('users') %>">
+      <%= link_to users_path do %>
+          <i class="fa fa-user"></i> <span>Users</span>
+          <span class="pull-right-container">
+              <small class="label pull-right bg-blue"><%= User.count %></small>
+            </span>
+      <% end %>
+    </li>
+    <li class="<%= is_current_navigation_sidebar?('events') %>">
+      <%= link_to events_path do %>
+          <i class="fa fa-edge"></i> <span>Events</span>
+          <span class="pull-right-container">
+              <small class="label pull-right bg-blue"><%= Event.count %></small>
+            </span>
+      <% end %>
+    </li>
+    <li class="<%= is_current_navigation_sidebar?('services') %>">
+      <%= link_to services_path do %>
+          <i class="fa fa-edge"></i><span>Services</span>
+          <span class="pull-right-container">
+              <small class="label pull-right bg-blue"><%= Service.count %></small>
+            </span>
+      <% end %>
+    </li>
+    <li class="<%= is_current_navigation_sidebar?('charges') %>">
+      <%= link_to charges_path do %>
+          <i class="fa fa-usd"></i><span>Incoming Payments </span>
+          <span class="pull-right-container">
+              <small class="label pull-right bg-blue"><%= Charge.count %></small>
+            </span>
+      <% end %>
+    </li>
+
+    <li class="<%= is_current_navigation_sidebar?('outgoing_payments') %>">
+      <%= link_to outgoing_payments_path do %>
+          <i class="fa fa-university"></i><span>Outgoing Payments</span>
+          <span class="pull-right-container">
+              <small class="label pull-right bg-blue"><%= OutgoingPayment.count %></small>
+            </span>
+      <% end %>
+    </li>
+
+  </ul>
+  <ul class="sidebar-menu" data-widget="tree">
+    <li class="header"></li>
+    <li class="treeview menu-open">
+      <a href="#">
+        <i class="fa fa-gears"></i> <span>User Settings</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="treeview-menu" style="display: block;">
+        <li class="<%= is_current_navigation_sidebar?('categories') %>">
+          <%= link_to categories_path do %>
+              <i class="fa fa-legal"></i>Categories
+          <% end %>
+        </li>
+        <li class="<%= is_current_navigation_sidebar?('skills') %>">
+          <%= link_to skills_path do %>
+              <i class="fa fa-legal"></i>Titles
+          <% end %>
+        </li>
+        <li class="<%= is_current_navigation_sidebar?('sub_skills') %>">
+          <%= link_to sub_skills_path do %>
+            <i class="fa fa-anchor"></i>Sub Titles
+          <% end %>
+        </li>
+      </ul>
+    </li>
+    <li class="<%= is_current_navigation_sidebar?('report_posts') %>">
+      <%= link_to report_posts_path do %>
+          <i class="fa fa-briefcase"></i><span>Reported Posts</span>
+          <span class="pull-right-container">
+            <small class="label pull-right bg-blue"><%= ReportPost.count %></small>
+          </span>
+      <% end %>
+    </li>
+  </ul>
+</section>

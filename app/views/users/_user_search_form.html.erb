@@ -1,0 +1,65 @@
+<%= form_tag users_path, method: :get do %>
+    <div class="col-md-12">
+      <div class="form-group col-md-4">
+        <%= select_tag "category", options_from_collection_for_select(Category.all, :id, :title, params[:category]), include_blank: "All", prompt:"Select a Category", class: "form-control select2", style:"width: 100%;"%>
+      </div>
+      <div class="form-group col-md-4">
+        <%=text_field_tag 'skill', value=params[:skill], id: "skill", placeholder: 'Title', class: 'form-control' %>
+      </div>
+      <div class="form-group col-md-4">
+        <%=text_field_tag 'sub_skill', value=params[:sub_skill], id: "sub_skill", placeholder: 'Sub Title', class: 'form-control' %>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group col-md-4" style="margin-top: 25px;">
+        <label class="custom-container">
+          <!--<input type="radio" name="gender" class="flat-red" checked value="Male">-->
+          <%= radio_button_tag 'gender', "Male", params[:gender] == "Male", class:"fladt-red" %>
+          <span class="checkmark"></span>
+          <span>Male</span>
+        </label>
+        <label class="custom-container">
+          <%= radio_button_tag 'gender', "Female", params[:gender] == "Female", class:"flatd-red" %>
+          <span>Female</span>
+          <span class="checkmark"></span>
+
+        </label>
+        <label class="custom-container">
+          <%= radio_button_tag 'gender', "", params[:gender].blank?, class:"flatd-red" %>
+          <span>All</span>
+          <span class="checkmark"></span>
+
+        </label>
+      </div>
+      <div class="form-group col-md-4" style="margin-top: 25px;">
+        <label class="custom-container">
+          <%= radio_button_tag 'skilled', "true", params[:skilled] == "true", class:"flatd-red" %>
+          <span>Skilled</span>
+          <span class="checkmark"></span>
+        </label>
+        <label class="custom-container">
+          <%= radio_button_tag 'skilled', "false", params[:skilled] == "false", class:"flatd-red" %>
+          <span>Normal</span>
+          <span class="checkmark"></span>
+        </label>
+        <label class="custom-container">
+          <%= radio_button_tag 'skilled', "", params[:skilled].blank?, class:"flatd-red" %>
+          <span>All</span>
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div class="col-md-4">
+        <input type="text" class="slider form-control" id="user_slider" name="dob">
+        <%= hidden_field_tag :min_age, params[:min_age] || 20 %>
+        <%= hidden_field_tag :max_age, params[:max_age] || 50 %>
+        <p>Choose Age</p>
+      </div>
+    </div>
+
+
+
+    <div class="form-group col-md-12 text-center">
+
+      <%= submit_tag 'Apply Filters', class:"btn bg-olive btn-flat margin" %>
+    </div>
+<% end %>

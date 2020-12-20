@@ -1,0 +1,74 @@
+<%= form_with(model: @service, local: true, class: 'form-horizontal service') do |f| %>
+    <% if @service.errors.any? %>
+        <div id="error_expl" class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <% @service.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+    <% end %>
+    <div class="box-body">
+      <div class="col-md-6 col-xs-offset-2">
+
+        <div class="form-group">
+          <%= f.label :title, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :title, class: 'form-control' %>
+          </div>
+          <!--<span class="help-block"><%#=f.error_span(:first_name) %></span>-->
+        </div>
+        <div class="form-group">
+          <%= f.label :note, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_area :note, class: 'form-control' %>
+          </div>
+          <!--<span class="help-block"><%#=f.error_span(:first_name) %></span>-->
+        </div>
+        <div class="form-group">
+          <%= f.label :price, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :price, class: 'form-control' %>
+          </div>
+          <!--<span class="help-block"><%#=f.error_span(:first_name) %></span>-->
+        </div>
+        <div class="form-group">
+          <%= f.label :duration, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :duration, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :time_type, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.select :time_type, Service.units_of_time_dropdown, {selected: @service.time_type}, class: 'select2 form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :is_private, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.check_box :is_private %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :owner_id, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.select :owner_id, User.dropdown_options, {selected: @service.owner_id}, class: 'select2 form-control' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class=" box-footer">
+      <div class="col-md-6 col-xs-offset-2 pull-right">
+        <%= f.submit nil, :class => 'btn btn-info' %>
+        <%= link_to t('.cancel', :default => t("helpers.links.cancel")), services_path, :class => 'btn btn-default' %>
+      </div>
+    </div>
+
+<% end %>

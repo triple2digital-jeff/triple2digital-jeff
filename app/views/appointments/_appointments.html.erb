@@ -1,0 +1,22 @@
+  <div class="box-header text-center">
+    <h2 class="box-title m-10">LIST OF APPOINTMENTS</h2>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <%= render_search_and_new_btn(Appointment.filter_fields, appointments_path, new_appointment_path, 'Create New Appointment', false) %>
+    <table id="dttb" class="table table-bordered table-hover">
+      <thead>
+      </tr>
+      <tr>
+        <th>#</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render partial: :appointment, collection: @appointments %>
+      </tbody>
+    </table>
+    <%= paginate(@appointments, remote: true) %>
+  </div>

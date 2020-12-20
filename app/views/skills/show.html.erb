@@ -1,0 +1,32 @@
+<div class="box box-info">
+  <div class="box-header with-border">
+    <h3 class="box-title">Skill Details</h3>
+  </div>
+  <div class='form-horizontal skill'>
+    <div class="box-body">
+      <div class="col-md-6 col-xs-offset-2">
+        <div class="form-group">
+          <label class='col-sm-3 control-label'> Category </label>
+          <div class="col-sm-9">
+            <div class='form-control'><%= @skill.category&.title %></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class='col-sm-3 control-label'> Title </label>
+          <div class="col-sm-9">
+            <div class='form-control'><%= @skill.title %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class=" box-footer">
+      <div class="col-md-6 col-xs-offset-2 pull-right">
+        <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_skill_path(@skill), :class => 'btn btn-info' %>
+        <%= link_to t('.delete', :default => t("helpers.links.delete")), @skill, method: :delete, :class => 'btn btn-danger', confirm: 'Are you sure?' %>
+        <%= link_to t('.back', :default => t("helpers.links.back")), skills_path, :class => 'btn btn-default' %>
+      </div>
+    </div>
+
+  </div>
+</div>

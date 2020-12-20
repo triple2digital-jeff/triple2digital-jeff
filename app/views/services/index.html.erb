@@ -1,0 +1,32 @@
+<div class="home-main-content">
+  <div class="box">
+    <div class="box-header text-center">
+      <h2 class="box-title m-10">LIST OF SERVICES</h2>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= render partial: 'services_search_form' %>
+      </div>
+    </div>
+  </div>
+
+  <!-- /.box-header -->
+    <div class="box-body">
+      <%#= render_search_and_new_btn(Service.filter_fields, services_path, new_service_path, 'Create New Service', false) %>
+      <table id="dttb" class="table table-bordered table-hover">
+        <thead>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Owner</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: :service, collection: @services %>
+        </tbody>
+      </table>
+      <%= paginate @services %>
+    </div>
+  </div>

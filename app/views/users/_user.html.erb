@@ -1,0 +1,10 @@
+<tr data-link="<%= user_path(user) %>">
+  <td><%=  user.id %></td>
+  <td><%= user.fullname%></td>
+  <td><%= user.email %></td>
+  <td><%= user.category.try(:title).try(:camelize) || "_" %></td>
+  <td><%= user.skill.try(:title).try(:camelize) || "_" %></td>
+  <td><%= user.sub_skill.try(:title).try(:camelize) || "_" %></td>
+  <td><%= user.is_skilled ? '<button type="button" class="btn btn-success">Yes</button>'.html_safe : '<button type="button" class="btn btn-danger">No</button>'.html_safe %></td>
+  <td><%= user.created_at.strftime('%B %d, %Y') %></td>
+</tr>

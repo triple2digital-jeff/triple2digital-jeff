@@ -1,0 +1,21 @@
+# == Schema Information
+#
+# Table name: chats
+#
+#  id              :bigint           not null, primary key
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  last_message_id :integer
+#  receiver_id     :integer
+#  sender_id       :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sender_id: 1
+  receiver_id: 1
+
+two:
+  sender_id: 1
+  receiver_id: 1

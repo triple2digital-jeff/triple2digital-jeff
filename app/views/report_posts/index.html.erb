@@ -1,0 +1,26 @@
+<div class="home-main-content">
+  <div class="box">
+    <div class="box-header text-center">
+      <h2 class="box-title m-10">LIST OF REPORTED POSTS</h2>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+      <%= render_search_and_new_btn(ReportPost.filter_fields, report_posts_path, new_report_post_path, 'Create New ReportPost', false) %>
+      <table id="dttb" class="table table-bordered table-hover">
+        <thead>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>Post</th>
+          <th>Posted By</th>
+          <th>Reported By</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: :report_post, collection: @report_posts %>
+        </tbody>
+      </table>
+      <%= paginate @report_posts %>
+    </div>
+  </div>
+</div>

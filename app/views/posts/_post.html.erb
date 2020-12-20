@@ -1,0 +1,8 @@
+<tr data-link="<%= post_path(post) %>">
+  <td><%= post.id %></td>
+  <td><%= post.description %></td>
+  <td><%= post.is_hidden %></td>
+  <td><%= post.post_type %></td>
+  <td><%= post.privacy %></td>
+  <td><%= post.user&.fullname %></td>
+</tr>

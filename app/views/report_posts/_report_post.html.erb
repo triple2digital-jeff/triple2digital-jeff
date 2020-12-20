@@ -1,0 +1,6 @@
+<tr data-link="<%= report_post_path(report_post) %>">
+  <td><%= report_post.id %></td>
+  <td><%= report_post.post&.description&.truncate(25) %></td>
+  <td><%= report_post.post&.user&.fullname %></td>
+  <td><%= report_post&.user&.fullname %></td>
+</tr>

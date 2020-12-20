@@ -1,0 +1,8 @@
+<tr data-link="<%= charge_path(charge) %>">
+  <td><%= charge.id %></td>
+  <td><%= charge.user.try(:fullname) %></td>
+  <td><%= charge.event.try(:title) %></td>
+  <td><%= charge.owner.try(:fullname) %></td>
+  <td><%= charge.amount/100 %></td>
+  <td><%= charge.created_at.strftime('%B %d, %Y, %H:%M') %></td>
+</tr>

@@ -1,0 +1,47 @@
+<% filter_by  = params[:search_by].blank? ? 'Filter by' : form_instructions[:filter_fields][params[:search_by].to_sym] %>
+<div class="col-lg-12 mb-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <%= form_with url: form_instructions[:search_path], method: :get do |f| %>
+      <div class="input-group">
+        <div class="input-group-btn search-panel">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span id="search_concept"><%= filter_by%></span> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <% form_instructions[:filter_fields].each do |key, text| %>
+              <li><a href="#<%=key%>"><%= text %></a></li>
+            <% end %>
+          </ul>
+        </div>
+        <%= f.hidden_field :search_by %>
+        <%= f.text_field :search_for, class: 'form-control', value: params[:search_for], placeholder: 'Search for...' %>
+        <span class="input-group-btn">
+          <button class="btn btn-default" id="search_btn" type="button"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+      </div>
+          <% end %>
+    </div>
+
+    <div class="col-lg-6">
+      <%= link_to new_button[:new_path] do %>
+          <button type="button" class="btn btn-sm pull-right btn-primary create_button"><%=new_button[:new_btn_text]%></button>
+      <% end if show_create_button %>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function(e){
+        $('.search-panel .dropdown-menu').find('a').click(function(e) {
+            e.preventDefault();
+            var param = $(this).attr("href").replace("#","");
+            var concept = $(this).text();
+            $('.search-panel span#search_concept').text(concept);
+            $('.input-group #search_by').val(param);
+        });
+        $('#search_btn').click(function(e) {
+           $('form').submit();
+        });
+    });
+</script>

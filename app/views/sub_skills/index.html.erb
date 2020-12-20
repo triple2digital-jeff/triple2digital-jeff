@@ -1,0 +1,26 @@
+<div class="home-main-content">
+  <div class="box">
+    <div class="box-header text-center">
+      <h2 class="box-title m-10">LIST OF SUB TITLES</h2>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+      <%= render_search_and_new_btn(SubSkill.filter_fields, sub_skills_path, new_sub_skill_path, 'Create New Sub Title', true) %>
+      <table id="dttb" class="table table-bordered table-hover">
+        <thead>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>Category</th>
+          <th>Title</th>
+          <th>Sub Title</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: :sub_skill, collection: @sub_skills %>
+        </tbody>
+      </table>
+      <%= paginate @sub_skills %>
+    </div>
+  </div>
+</div>

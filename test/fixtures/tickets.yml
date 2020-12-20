@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: tickets
+#
+#  id                :bigint           not null, primary key
+#  expire_date       :datetime
+#  has_scanned       :boolean          default(FALSE)
+#  is_expired        :boolean
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  event_id          :integer
+#  owner_id          :integer
+#  ticket_package_id :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  owner_id: 1
+  is_expired: false
+  event_id: 1
+  ticket_package_id: 1
+  expire_date: 2019-08-31 11:16:34
+
+two:
+  owner_id: 1
+  is_expired: false
+  event_id: 1
+  ticket_package_id: 1
+  expire_date: 2019-08-31 11:16:34

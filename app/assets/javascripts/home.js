@@ -1,0 +1,17 @@
+//= require rails-ujs
+//= require activestorage
+// = require bower_components/jquery/jquery
+// = require bower_components/jquery-ui/jquery-ui
+// = require bower_components/bootstrap/bootstrap
+// = require bower_components/admin/adminlte
+// = require bower_components/slider/ion.rangeSlider
+// = require bower_components/icheck/icheck
+// = require bower_components/select2/select2
+// = require data-confirm-modal
+//= require datatables
+//= require select2
+//= require Chart.min
+//= require bootstrap-datepicker
+//= require common
+//= require cable
+//= require confirm.min

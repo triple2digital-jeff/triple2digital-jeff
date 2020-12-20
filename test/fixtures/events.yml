@@ -1,0 +1,49 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id             :bigint           not null, primary key
+#  address        :string
+#  cover_image    :text             default("http://app.profilerlife.com/images/default_cover.png")
+#  description    :text
+#  dress_code     :string
+#  end_date       :datetime
+#  has_published  :boolean          default(FALSE)
+#  is_enabled     :integer          default(0)
+#  is_paid        :boolean          default(FALSE)
+#  is_recurring   :boolean          default(FALSE)
+#  latitude       :float
+#  longitude      :float
+#  max_tickets    :integer          default(0)
+#  price          :float            default(0.0)
+#  recurring_type :integer          default(0)
+#  speaker        :string
+#  start_date     :datetime
+#  status         :string
+#  title          :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  owner_id       :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  owner_id: 1
+  start_date: 2019-07-07 15:04:11
+  end_date: 2019-07-07 15:04:11
+  title: MyString
+  description: MyText
+  status: MyString
+  price: 1.5
+  is_paid: false
+
+two:
+  owner_id: 1
+  start_date: 2019-07-07 15:04:11
+  end_date: 2019-07-07 15:04:11
+  title: MyString
+  description: MyText
+  status: MyString
+  price: 1.5
+  is_paid: false

@@ -1,0 +1,272 @@
+<div class="invoice" style="border: 10px solid #f4f4f4">
+
+  <div class="invoice">
+    <div class="box box-info">
+      <div class="box-header with-border text-center">
+        <h3 class="box-title">Event Details</h3>
+      </div>
+      <div class='form-horizontal event'>
+        <div class="row">
+        <div class="col-md-4">
+          <%= image_tag(@event.cover_image, style: "width: 100%") %>
+
+        </div>
+          <div class="col-md-8">
+
+            <div class="table-responsive" style="margin-top: 20px;">
+          <table class="table">
+            <tbody>
+            <tr>
+              <th style="width:25%">Title:</th>
+              <td><%= @event.title %></td>
+              <th>Description:</th>
+              <td><%= @event.description %></td>
+            </tr>
+            <tr>
+              <th>Start Date:</th>
+              <td><%= @event.start_date&.to_date %></td>
+              <th>End Date:</th>
+              <td><%= @event.end_date&.to_date %></td>
+            </tr>
+            <tr>
+              <th>Organizer:</th>
+              <td><%= @event.owner&.fullname %></td>
+            </tr>
+            </tbody></table>
+        </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <%# if @event.is_paid? %>
+    <div class="invoice">
+
+      <div class="box box-info" style="min-height: 55%">
+        <div class="box-header with-border text-center">
+          <h3 class="box-title">Select Tickets</h3>
+        </div>
+        <div class="box-body">
+          <div class="form-group">
+            <label class='col-sm-4 control-label'>Ticket Type</label>
+            <label class='col-sm-4 control-label'>Ticket Price</label>
+            <label class='col-sm-4 control-label'>Select Tickets</label>
+          </div>
+          <% @event.ticket_packages.each do |pkg| %>
+            <div class="form-group">
+              <div class="col-sm-4">
+                <div class='form-control'><%= pkg.ticket_type %></div>
+              </div>
+              <div class="col-sm-4">
+                <div class='form-control price'>$<%= sprintf("%.2f", pkg.price) %></div>
+              </div>
+
+              <div class="col-sm-4" style="margin-bottom: 10px">
+                  <%= select_tag :ticket_count, options_for_select((1..15).to_a),:prompt => 'Tickets', class:'form-control fieldBg', "data-stripe"=>"exp-year", "data-package_id"=> pkg.id %>
+              </div>
+            </div>
+          <% end %>
+          <div class="form-group">
+          <label class='col-sm-4 control-label text-right'>Total Price</label>
+          <div class="col-sm-4">
+            <div class='form-control total_price'>$0.00</div>
+          </div>
+          <div class="col-sm-4 text-center">
+            <!--<button type="button" class="btn btn-primary reset" style="width: 100%">Reset Price</button>-->
+          </div>
+        </div>
+        </div>
+
+      </div>
+      <div id="error_box" class="alert alert-danger text-center"></div>
+    </div>
+  <%# end %>
+
+  <div class="invoice">
+    <div class="box box-info">
+      <div class="box-header with-border text-center">
+        <h3 class="box-title">Required User Details</h3>
+      </div>
+      <div class="box-body">
+        <%= form_tag charge_new_user_for_event_charges_path, id: "ticket_purchase_form" do %>
+            <% if flash[:error].present? %>
+                <div id="error_explanation">
+                  <p><%= flash[:error] %></p>
+                </div>
+            <% end %>
+            <%=hidden_field_tag :stripeToken %>
+            <%=hidden_field_tag :event_id, @event.id %>
+            <%=hidden_field_tag :amount %>
+            <%=hidden_field_tag "ticket_attributes[]" %>
+
+            <div class="col-md-12 user-details-section">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-3">
+                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First name" required="true">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" required="true">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required="true">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" name="phone" id="phone"  placeholder="Phone Number" required="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group text-center free-section-btn">
+                <button type="button" class="btn btn-primary text-center" id="purchase_tickets">Register For Event</button>
+              </div>
+            </div>
+            <div class="form-group text-center stripe-section-btn">
+              <div class="row">
+                <div class="col-md-12 stipe_box">
+                  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                          data-key="pk_test_EZAs2cMqUSD3gNWi0xHN6e2B00mh6Escxn"
+                          data-description= "<%=@event.title %> Payment"
+                          data-amount="0"
+                          data-label="Pay and Register"
+                          data-locale="auto"></script>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function() {
+    $("#error_box").hide();
+
+    function hide_butons(){
+      $(".stripe-section-btn").hide();
+      $(".free-section-btn").hide();
+    }
+    hide_butons();
+    $(".reset").on("click", function () {
+      $(".total_price").text("$0.00");
+      set_stripe_price();
+      hide_butons();
+    });
+
+    $(".fieldBg").on("change", function () {
+      $(".total_price").text("$0.00");
+      all_tickets= [];
+
+      total_tickets = 0;
+      $(".fieldBg").each(function( index ) {
+        var ticket = $(this).val();
+        var package_id = $(this).data("package_id");
+        if ((ticket != "") && !(isNaN(ticket))){
+          var price = parseFloat($($(this)).parent().parent().find(".price").text().replace("$",""));
+          var total_price = parseFloat($(".total_price").text().replace("$",""));
+          new_price = (ticket * price) + total_price;
+          $(".total_price").text("$"+new_price.toFixed(2));
+          total_tickets += ticket;
+          all_tickets.push({"ticket_package_id":package_id, "count": ticket});
+          console.log(ticket+"df");
+        }
+      });
+      $('[name="ticket_attributes[]"]').val(JSON.stringify(all_tickets));
+
+      //Check if tickets are available
+      $.ajax({
+        url: "/charges/validate_tickets_count",
+        type: "GET",
+        data: {"ticket_attributes" : $('[name="ticket_attributes[]"]').val()},
+        dataType: "json",
+        success: function(data) {
+          $("#error_box").text('');
+          $("#error_box").hide();
+          //show/hide registration buttons
+          if(total_tickets > 0) {
+            if (parseFloat($(".total_price").text().replace("$","")) > 0) {
+              $(".stripe-section-btn").show();
+              $(".free-section-btn").hide();
+            }
+            else {
+              $(".stripe-section-btn").hide();
+              $(".free-section-btn").show();
+            }
+          }
+          else{
+            hide_butons();
+          }
+          update_data();
+        },
+        error: function(data){
+          $("#error_box").text(data.responseJSON.error);
+          $("#error_box").show();
+          hide_butons();
+          update_data();
+        }
+      });
+
+
+    });
+
+    function update_data() {
+      total_tickets = 0;
+      all_tickets= [];
+      set_stripe_price();
+    }
+
+    function set_stripe_price(){
+      var pp = parseFloat($(".total_price").text().replace("$",""));
+      $("#amount").val(pp);
+      StripeCheckout.__app.configurations.button0.amount = parseFloat($(".total_price").text().replace("$",""))*100;
+    }
+
+
+    $('#purchase_tickets').on("click", function () {
+      validate_form();
+      if ($(".error").length == 0){
+        $("#ticket_purchase_form").submit();
+      }
+    });
+    $("#ticket_purchase_form input").on("focusout", function(){
+      validate_form();
+    });
+    $("#ticket_purchase_form :input[type=email]").on("focusout", function(){
+      validate_form();
+    });
+//    purchase_tickets
+    function validate_form(){
+//      e.preventDefault();
+      var first_name = $('#first_name').val();
+      var last_name = $('#last_name').val();
+      var email = $('#email').val();
+      var password = $('#phone').val();
+
+      $(".error").remove();
+
+      if (first_name.length < 1) {
+        $('#first_name').after('<span class="error">This field is required</span>');
+      }
+      if (last_name.length < 1) {
+        $('#last_name').after('<span class="error">This field is required</span>');
+      }
+      if (email.length < 1) {
+        $('#email').after('<span class="error">This field is required</span>');
+      } else {
+//        var regEx = /^[A-Z0-9][A-Z0-9._%+-]{0,63}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
+        var regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var validEmail = regEx.test(String(email).toLowerCase());
+        if (!validEmail) {
+          $('#email').after('<span class="error">Enter a valid email</span>');
+        }
+      }
+      if (password.length < 8) {
+        $('#phone').after('<span class="error">Phone must be at least 8 digits long</span>');
+      }
+    }
+
+  });
+</script>

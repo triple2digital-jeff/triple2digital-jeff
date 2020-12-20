@@ -1,0 +1,23 @@
+<div class="messages" id="messages">
+
+</div>
+
+<script>
+  $(function() {
+    App.chat = App.cable.subscriptions.create(
+        {
+          channel: "ChatChannel",
+          chat: 2,
+          api_token: 'FTzeVwM0ErEv8lrkwgeEHQtt'
+        },
+        {
+          received: function(data) {
+            console.log(data);
+          },
+          speak: function(message) {
+            return this.perform('speak', message);
+          }
+        }
+    );
+  });
+</script>

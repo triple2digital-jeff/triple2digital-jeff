@@ -1,0 +1,20 @@
+<%= form_tag services_path, method: :get do %>
+    <div class="col-sm-12">
+    </div>
+
+    <div class="form-group col-md-6">
+      <label>Category</label>
+      <%= select_tag "category", options_from_collection_for_select(ServiceCategory.all, :id, :title, params[:category]), include_blank: "All", prompt:"Select a Category", class: "form-control select2", style:"width: 100%;"%>
+    </div>
+
+    <div class="col-md-6">
+      <input type="text" class="slider form-control" id="service_slider" name="price">
+      <%= hidden_field_tag :min_price, params[:min_price] || 10 %>
+      <%= hidden_field_tag :max_price, params[:max_price] || 100 %>
+      <p>Choose Price</p>
+    </div>
+    <div class="form-group col-md-12 text-center">
+
+      <%= submit_tag 'Apply Filters', class:"btn bg-olive btn-flat margin" %>
+    </div>
+<% end %>

@@ -1,0 +1,92 @@
+<div class="box-body box-profile">
+  <div class="box-header with-border">
+    <h3 class="box-title"><%= @user.fullname.humanize %> Details</h3>
+  </div>
+  <div class="form-horizontal">
+    <div class="box-body">
+      <div class="col-lg-12">
+        <div class="col-lg-6">
+            <label class="control-label" for="user_title">First Name</label>
+            <div class="form-control"><%= @user.first_name %></div>
+        </div>
+        <div class="col-lg-6">
+            <label class="control-label" for="user_title">Last Name</label>
+            <div class="form-control"><%= @user.last_name %></div>
+        </div>
+
+        <div class="col-lg-6">
+          <label class="control-label" for="user_title">Phone</label>
+            <div class="form-control"><%= @user.phone %></div>
+        </div>
+
+        <div class="col-lg-6">
+          <label class="control-label" for="user_title">Address</label>
+            <div class="form-control"><%= @user.address %></div>
+        </div>
+        <div class="col-lg-6">
+          <label class="control-label" for="user_title">City</label>
+
+            <div class="form-control"><%= @user.city %></div>
+        </div>
+        <div class="col-lg-6">
+          <label class="control-label" for="user_title">Zipcode</label>
+
+            <div class="form-control"><%= @user.zipcode %></div>
+        </div>
+        <div class="col-lg-6">
+          <label class="control-label" for="user_title">State</label>
+
+            <div class="form-control"><%= @user.state %></div>
+        </div>
+        <div class="col-lg-6">
+          <label class="control-label" for="user_title">Country</label>
+            <div class="form-control"><%= @user.country %></div>
+        </div>
+        <div class="col-lg-6">
+          <label class="control-label" for="user_title">Provider</label>
+            <div class="form-control"><%= @user.provider %></div>
+        </div>
+        <!--<div class="col-lg-6">-->
+          <!--<label class="control-label" for="user_title">Unconfirmed Email</label>-->
+            <!--<div class="form-control"><%#= @user.unconfirmed_email %></div>-->
+        <!--</div>-->
+        <div class="col-lg-6">
+          <label class="control-label" for="user_title">Skilled?</label>
+
+            <div class="control-label pull-left">
+              <% if @user.is_skilled? %>
+                  <i class="fa fa-check-square-o text-success" aria-hidden="true"></i>
+              <% else %>
+                  <i class="fa fa-times text-danger" aria-hidden="true"></i>
+              <% end %>
+            </div>
+          <div class="form-control"><%= @user.skilled_status %></div>
+
+        </div>
+
+        <% if @user.is_skilled? %>
+          <div class="col-lg-6">
+            <label class="control-label" for="user_title">Category</label>
+              <div class="form-control"><%= @user.category.try(:title).try(:camelize) || "_" %></div>
+          </div>
+          <div class="col-lg-6">
+            <label class="control-label" for="user_title">Title</label>
+              <div class="form-control"><%= @user.skill.try(:title).try(:camelize) || "_" %></div>
+          </div>
+          <div class="col-lg-6">
+            <label class="control-label" for="user_title">Sub Title</label>
+
+              <div class="form-control"><%= @user.sub_skill.try(:title).try(:camelize) || "_" %></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class=" box-footer">
+      <div class="col-md-6 col-xs-offset-2 pull-right">
+        <%= link_to 'Edit', edit_user_path(@user), :class => 'btn btn-info' %>
+        <%= link_to 'Delete', user_path(@user), method: :delete, :class => 'btn btn-danger', data: {confirm: 'Are you sure?'} %>
+      </div>
+    </div>
+  </div>
+</div>

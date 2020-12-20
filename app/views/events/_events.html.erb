@@ -1,0 +1,31 @@
+  <div class="box-header text-center">
+    <h2 class="box-title m-10">LIST OF EVENTS
+    <% if @user.present? %>
+         <b>Created By <%= @user.fullname %></b>
+    <% end %>
+    </h2>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <%= render_search_and_new_btn(Event.filter_fields, events_path, new_event_path, 'Create New Event', false) %>
+    <table id="dttb" class="table table-bordered table-hover">
+      <thead>
+      </tr>
+      <tr>
+        <th>No</th>
+        <th>Title</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Price</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render partial: :event, collection: @events %>
+      <% if @events.blank? %>
+      <tr><td colspan="5" class="text-red text-center"> There is no event for now!</td></tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate(@events, remote: true) %>
+  </div>

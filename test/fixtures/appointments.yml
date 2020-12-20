@@ -1,0 +1,37 @@
+# == Schema Information
+#
+# Table name: appointments
+#
+#  id               :bigint           not null, primary key
+#  appointment_date :date
+#  end_time         :string
+#  is_booked        :boolean          default(FALSE)
+#  note             :text
+#  start_time       :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  service_id       :bigint
+#  user_id          :bigint
+#  working_day_id   :integer
+#
+# Indexes
+#
+#  index_appointments_on_service_id  (service_id)
+#  index_appointments_on_user_id     (user_id)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_time: 2019-07-07 01:41:24
+  end_time: 2019-07-07 01:41:24
+  post: one
+  user: one
+  status: MyString
+
+two:
+  start_time: 2019-07-07 01:41:24
+  end_time: 2019-07-07 01:41:24
+  post: two
+  user: two
+  status: MyString

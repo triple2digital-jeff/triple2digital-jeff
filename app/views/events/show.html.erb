@@ -1,0 +1,166 @@
+<div class="box box-info">
+  <div class="box-header with-border text-center">
+    <h3 class="box-title">Event Details</h3>
+  </div>
+  <div class="box box-solid">
+    <!-- /.box-header -->
+    <div class="box-body">
+      <div class="col-md-12">
+        <div class="col-md-3">
+          <label>Total Reviews / Total Attendees: </label>
+          <div>
+            <small class="label bg-blue" style="font-size: 15px;"><%= @event.reviews_count.to_s+"/"+@event.fetch_attendees.count.to_s %></small>
+           </div>
+        </div>
+        <div class="col-md-3">
+          <label>Reviewed As Occured:
+            <small class="label bg-green"><%= @event.has_occured.count %></small>
+          </label>
+          <div class="progress progress-sm active">
+            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="<%= @event.reviews_count %>" aria-valuemin="0" aria-valuemax="<%= @event.reviews_count %>" style="width: <%= @event.has_occured_percent %>%">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>Reviewed As Not Occured:
+            <small class="label bg-red"><%= @event.has_not_occured.count %></small>
+          </label>
+          <div class="progress progress-sm">
+            <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="<%= @event.has_not_occured_percent %>" aria-valuemin="0" aria-valuemax="<%= @event.has_not_occured_percent %>" style="width: <%= @event.has_not_occured_percent %>%">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label>Not Reviewed:
+            <small class="label progress-bar-warning"><%= @event.not_responded.count %></small>
+          </label>
+          <div class="progress progress-sm active">
+            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="<%= @event.not_responded_percent %>" aria-valuemin="0" aria-valuemax="<%= @event.not_responded_percent %>" style="width: <%= @event.not_responded_percent %>%">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 text-right">
+        <button type="button" class="btn btn-primary" id="unlock_payment">Unlock Payment</button>
+      </div>
+      <% if @event.has_occured_percent < 60.0 %>
+        <div class="col-md-6">
+          <div class="alert alert-warning alert-dismissible" style="padding: 5px">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"  style="top: -8px; left: -1px;">×</button>
+            <div><i class="icon fa fa-warning"></i>This event does't meat the criteria of minmum 60% positive reviews.
+              </div>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+    <!-- /.box-body -->
+  </div>
+  <div class='form-horizontal event'>
+      <div class="box-body">
+        <div class="col-md-12">
+
+          <div class="col-md-6">
+            <label class='control-label'> Title </label>
+              <div class='form-control'><%= @event.title %></div>
+          </div>
+          <div class="col-md-6">
+            <label class='control-label'> Description </label>
+              <div class='form-control'><%= @event.description %></div>
+          </div>
+
+          <div class="col-md-6">
+            <label class='control-label'> Start Date </label>
+              <div class='form-control'><%= @event.start_date&.to_date %></div>
+          </div>
+
+          <div class="col-md-6">
+            <label class='control-label'> End Date </label>
+              <div class='form-control'><%= @event.end_date&.to_date %></div>
+          </div>
+
+          <div class="col-md-6">
+            <label class='control-label'> Owner </label>
+              <div class='form-control'><%= @event.owner&.fullname %></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box-primary">
+        <div class="box-header with-border text-center">
+          <h3 class="box-title">Event Tickets Detail</h3>
+        </div>
+        <div class="box box-solid">
+          <!-- /.box-header -->
+          <div class="box-body">
+            <table id="dttb" class="table table-bordered table-hover">
+              <thead>
+              </tr>
+              <tr>
+                <th>#</th>
+                <th>Ticket Type</th>
+                <th>Ticket Price</th>
+                <th>Maximum Tickets</th>
+                <th>Sold Tickets</th>
+                <th>Available Tickets</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @event.ticket_packages.each_with_index do |packg, index| %>
+                <tr>
+                  <td><%= index+1 %></td>
+                  <td><%= packg.ticket_type %></td>
+                  <td>$ <%= packg.price %></td>
+                  <td><%= packg.maximum_tickets %></td>
+                  <td><%= packg.tickets.sold.count %></td>
+                  <td><%= packg.tickets.available.count %></td>
+                </tr>
+               <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box-primary">
+        <div class="box-header with-border text-center">
+          <h3 class="box-title">Event Attendies</h3>
+        </div>
+        <div class="box box-solid">
+          <!-- /.box-header -->
+          <div class="box-body">
+            <table id="dttbf" class="table table-bordered table-hover">
+              <thead>
+              </tr>
+              <tr>
+                <th>#</th>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @event.user_attendees.each_with_index do |user, index|%>
+                  <tr data-link="<%= user_path(user) %>">
+                    <td><%=  index+1 %></td>
+                    <td><%=  user.id %></td>
+                    <td><%= user.fullname %></td>
+                    <td><%= user.email %></td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class=" box-footer">
+        <div class="col-md-6 col-xs-offset-2 pull-right hidden">
+          <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_event_path(@event), :class => 'btn btn-info' %>
+          <%= link_to t('.delete', :default => t("helpers.links.delete")), @event, method: :delete, :class => 'btn btn-danger', confirm: 'Are you sure?' %>
+          <%= link_to t('.back', :default => t("helpers.links.back")), events_path, :class => 'btn btn-default' %>
+        </div>
+      </div>
+
+  </div>
+</div>

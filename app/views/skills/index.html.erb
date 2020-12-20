@@ -1,0 +1,25 @@
+<div class="home-main-content">
+  <div class="box">
+    <div class="box-header text-center">
+      <h2 class="box-title m-10">LIST OF TITLES</h2>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+      <%= render_search_and_new_btn(Skill.filter_fields, skills_path, new_skill_path, 'Create New Title', true) %>
+      <table id="dttb" class="table table-bordered table-hover">
+        <thead>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>Category</th>
+          <th>Title</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: :skill, collection: @skills %>
+        </tbody>
+      </table>
+      <%= paginate @skills %>
+    </div>
+  </div>
+</div>

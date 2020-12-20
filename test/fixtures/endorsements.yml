@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: endorsements
+#
+#  id             :bigint           not null, primary key
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  endorsed_by_id :integer
+#  endorsed_to_id :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  endorsed_by: 1
+  endorsed_to: 1
+
+two:
+  endorsed_by: 1
+  endorsed_to: 1

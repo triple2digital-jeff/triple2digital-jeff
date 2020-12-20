@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<div class="home-main-content">
+  <div class="box">
+    <div class="box-header text-center">
+      <h2 class="box-title m-10">LIST OF USERS</h2>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= render partial: 'user_search_form' %>
+      </div>
+    </div>
+  </div>
+  <div id = "slider-3"></div>
+  <div id = "price"></div>
+
+  <!-- /.box-header -->
+    <div class="box-body">
+      <table id="dttb" class="table table-bordered table-hover">
+        <thead>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Category</th>
+          <th>Title</th>
+          <th>Sub Title</th>
+          <th>Skilled</th>
+          <th>Register At</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: :user, collection: @users %>
+        </tbody>
+      </table>
+      <%= paginate @users %>
+    </div>
+  </div>
