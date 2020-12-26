@@ -84,7 +84,7 @@ class StripeCustomer
       )
       user.update(stripe_token: customer.id)
     else
-      customer = Stripe::Customer.retrieve(stripe_token)
+      customer = Stripe::Customer.retrieve(user.stripe_token)
     end
     customer
   end
