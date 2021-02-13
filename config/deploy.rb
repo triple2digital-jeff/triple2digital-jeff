@@ -2,7 +2,7 @@
 lock "~> 3.11.0"
 
 set :application, "profiler_life"
-set :repo_url, "git@github.com:triple2digital/ProfilerLife.git"
+set :repo_url, "git@github.com:triple2digital-jeff/triple2digital-jeff.git"
 
 
 set :rbenv_type, :system # or :system, depends on your rbenv setup
