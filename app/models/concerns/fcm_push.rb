@@ -3,18 +3,23 @@ class FcmPush
   require 'fcm'
 
   def initialize
-    @fcm = FCM.new(ENV['FCM_KEY'])
+    @fcm = FCM.new(Rails.application.secrets.fcm_token)
   end
 
-  def send_push_notification(title="Profiler", body="Profiler", reg_ids=[])
-    options = {
-        "notification": {
-        "title": title,
-        "body": body
-        }
+  def send_push_notification(title="Profiler", body="Profiler", reg_ids=[], platform="android")
+    case platform
+    when 'ios'
+    when 'android'
+      options = {
+      "notification": {
+      "title": title,
+      "body": body
+      },
+      priority: 'high',
     }
     response = @fcm.send(reg_ids, options)
-    PushLog.new.save_log(response)
+    end
+    #PushLog.new.save_log(response)
   end
 
   def send_daily_push
