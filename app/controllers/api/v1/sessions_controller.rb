@@ -11,7 +11,7 @@ class Api::V1::SessionsController < ApplicationController
     if @user && @user.valid_password?(params[:password])
       @user.update_user_api_token(create_new=true)
       @user.reload
-      @user.setup_devices(params[:PushToken]) if params[:PushToken].present?
+      @user.setup_devices(params[:PushToken],params[:platform]) if params[:PushToken].present?
       render json: @user, status: :created
     else
       render :json => {:error => "Email or password is not correct"}, :status => 404

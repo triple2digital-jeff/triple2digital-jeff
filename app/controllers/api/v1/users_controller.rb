@@ -29,7 +29,7 @@ class Api::V1::UsersController < ApplicationController
     pass = params[:user][:password]
     @user.password=@user.password_confirmation=pass
     if @user.save
-      @user.setup_devices(params[:PushToken]) if params[:PushToken].present?
+      @user.setup_devices(params[:PushToken],params[:platform]) if params[:PushToken].present?
       render json: @user, include: [:endorsements, :skill, :sub_skill], status: :created
     else
       render :json => {:error => "Unable to create user at this time.", error_log: @user.errors.full_messages}, :status => :unprocessable_entity
@@ -88,7 +88,7 @@ class Api::V1::UsersController < ApplicationController
     @user.confirmation_token = nil
     @user.confirmed_at = DateTime.now
     if @user.save
-      @user.setup_devices(params[:PushToken]) if params[:PushToken].present?
+      @user.setup_devices(params[:PushToken],params[:platform]) if params[:PushToken].present?
       render json: @user, status: :ok
     else
       render :json => {:error => "Unable to create user at this time.", error_log: @user.errors.full_messages}, :status => :unprocessable_entity

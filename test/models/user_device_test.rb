@@ -4,6 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  is_active  :boolean          default(TRUE)
+#  platform   :string
 #  push_token :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

@@ -11,7 +11,7 @@
 #  confirmation_token     :string
 #  confirmed_at           :datetime
 #  country                :string
-#  cover_img              :string           default("http://localhost:3000/images/default_cover.png")
+#  cover_img              :string           default("http://app.profilerlife.com/images/default_cover.png")
 #  dob                    :string
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
@@ -22,7 +22,7 @@
 #  latitude               :float
 #  longitude              :float
 #  phone                  :string
-#  profile_img            :string           default("http://localhost:3000/images/user.png")
+#  profile_img            :string           default("http://app.profilerlife.com/images/user.png")
 #  provider               :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -327,7 +327,7 @@ class User < ApplicationRecord
     path
   end
 
-  def setup_devices(token)
+  def setup_devices(token,platform)
     self.de_active_devices
     device = self.user_devices.where(push_token: token).first_or_create
     device.set_active
