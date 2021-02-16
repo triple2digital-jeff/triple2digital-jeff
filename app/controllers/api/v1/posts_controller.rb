@@ -85,6 +85,8 @@ class Api::V1::PostsController < ApplicationController
       if params[:like] == '1'
         @post.post_likes.where(liked_by: @user).first_or_create
         msg= 'liked'
+        device = @post.user_devices.active.first
+        FcmPush.new.send_push_notification('',"#{@user.first_name} likes your post",device.try(:push_token), device.try(:platform)) if device.present?
       else
         @post.post_likes.find_by_liked_by_id(@user.id).try(:destroy)
         msg= 'unliked'
