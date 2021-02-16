@@ -329,7 +329,7 @@ class User < ApplicationRecord
 
   def setup_devices(token,platform)
     self.de_active_devices
-    device = self.user_devices.where(push_token: token).first_or_create
+    device = self.user_devices.where(push_token: token, platform: platform).first_or_create
     device.set_active
   end
 
