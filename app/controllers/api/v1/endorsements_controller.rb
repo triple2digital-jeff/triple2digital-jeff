@@ -21,7 +21,7 @@ class Api::V1::EndorsementsController < ApplicationController
     @endorsement = Endorsement.new(endorsement_params)
     if @endorsement.save
       device = @endorsement.endorsed_to.user_devices.active.first
-      FcmPush.new.send_push_notification('',"You have been endorsed by #{@endorsement.endorsed_by.first_name}",device.try(:push_token), device.try(:platform)) if device
+      FcmPush.new.send_push_notification('',"You have been endorsed by #{@endorsement.endorsed_by.first_name}",device.try(:push_token), device.try(:platform)) if device.present?
       render json: @endorsement, include: [:endorsed_by, :endorsed_to], status: :created
     else
       render :json => {:error => "Unable to create endorsement at this time.", error_log: @endorsement.errors.full_messages}, :status => :unprocessable_entity

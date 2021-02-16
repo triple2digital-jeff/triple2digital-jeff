@@ -7,9 +7,8 @@ class FcmPush
   end
 
   def send_push_notification(title="Profiler", body="Profiler", reg_ids=[], platform="android")
-    case platform
-    when 'ios'
-    when 'android'
+    if platform == "ios"
+    else
       options = {
       "notification": {
       "title": title,
