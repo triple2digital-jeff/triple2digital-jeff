@@ -102,6 +102,8 @@ class Api::V1::PostsController < ApplicationController
       @new_post.user_id = @user.id
       @new_post.parent_id = @post.id
       if @new_post.save
+        device = @post.user.user_devices.active.first
+        FcmPush.new.send_push_notification('',"#{@new_post.user.first_name} shared your post",device.try(:push_token), device.try(:platform)) if device.present?
         render :json => @new_post, include: {comments:{}, user:{methods: [ :title, :is_confirmed]}}, methods: [:likes_count, :comments_count, :shared_count, :parent_user] #{:success => "Post has been shared successfully."}, :status => :ok
       else
         render :json => {:error => "Unable to share post this time. Please try again later.", error_log: @new_post.errors.full_messages}, :status => :unprocessable_entity
