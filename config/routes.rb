@@ -25,6 +25,7 @@ Rails.application.routes.draw do
           get :get_unreviewed_events
           get :user_event_reviews
           post :contact_as
+          get :visitors
         end
         collection do
           put :forgot_password

@@ -17,7 +17,17 @@ class Api::V1::UsersController < ApplicationController
 
   # GET /users/1
   def show
+    visit = @user.visits.order("created_at desc").limit(1).first
+    if (visit.present? && (visit.visitor_id == params[:user_id].to_i))
+      visit.destroy
+    end
+    @user.visits.create(visitor: current_user) if @user.id != current_user.id
     render json: @user, include: [:endorsements, :skill, :sub_skill], current_user_id: params[:user_id]
+  end
+
+  def visitors
+    @users = current_user.visitors.where('visits.created_at > ?', 10.days.ago).order("created_at desc").limit(10)
+    render json: @users, current_user_id: params[:user_id]
   end
 
   # POST /users
