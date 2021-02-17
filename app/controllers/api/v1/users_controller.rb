@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
   # skip_before_action :verify_authenticity_token
 
   before_action :verify_api_token, except: [:create, :forgot_password, :facebook_auth]
-  before_action :set_user, only: [:user_event_reviews, :get_bank_info, :payout, :total_earning, :recent_payouts, :add_stripe_token, :get_user_events, :show, :update, :destroy, :update_password, :update_user_skills, :get_user_services, :get_user_availed_services, :add_working_days, :get_unreviewed_events]
+  before_action :set_user, only: [:user_event_reviews, :get_bank_info, :payout, :total_earning, :recent_payouts, :add_stripe_token, :get_user_events, :show, :update, :destroy, :update_password, :update_user_skills, :get_user_services, :get_user_availed_services, :add_working_days, :get_unreviewed_events, :contact_as]
   before_action :check_user_with_email, only: [:facebook_auth]
   before_action :check_fb_user, only: [:create]
   before_action :check_user_skill, only: [:update_user_skills]
@@ -214,6 +214,11 @@ class Api::V1::UsersController < ApplicationController
     else
       render :json => {:error => accounts[:errors]}, status: :unprocessable_entity
     end
+  end
+
+  def contact_as
+    EventMailer.contact_as(@user, params[:content]).deliver
+    render json: {message: 'sent successfully'}
   end
 
   private

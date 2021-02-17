@@ -10,4 +10,10 @@ class EventMailer < ApplicationMailer
     @external_user_p = external_user
     mail(to: @buyer.email, subject: 'You Have Purcahsed Tickets For Event '+ event.title)
   end
+
+  def contact_as(user, content)
+    @user = user
+    @content = content
+    mail(to: "jadamdipak@gmail.com", from: user.email, subject: 'Feedback Query')
+  end
 end

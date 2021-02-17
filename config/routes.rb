@@ -24,6 +24,7 @@ Rails.application.routes.draw do
           get :get_bank_info
           get :get_unreviewed_events
           get :user_event_reviews
+          post :contact_as
         end
         collection do
           put :forgot_password
