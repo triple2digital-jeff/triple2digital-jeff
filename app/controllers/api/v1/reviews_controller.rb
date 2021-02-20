@@ -21,6 +21,9 @@ class Api::V1::ReviewsController < ApplicationController
   def create
     @review = Review.new(review_params)
     if @review.save
+      user = @review.reviewable.owner
+      token = user.user_devices.active.pluck(:push_token)
+      FcmPush.new.send_push_notification('',"You got a review on your #{@review.reviewable_type}",token) if token.present?
       render json: @review, include: [:user]
     else
       render :json => {:error => "Unable to create review at this time.", error_log: @review.errors.full_messages}, :status => :unprocessable_entity
