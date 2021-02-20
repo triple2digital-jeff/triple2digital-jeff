@@ -21,6 +21,9 @@ class Api::V1::AppointmentsController < ApplicationController
   def create
     @appointment = Appointment.new(appointment_params)
     if @appointment.save
+      user = @appointment.service.owner
+      token = user.user_devices.active.pluck(:push_token)
+      FcmPush.new.send_push_notification('',"You have new appointment",token) if token.present?
       render json: @appointment, include: {service: {include: :service_category}}
     else
       render :json => {:error => "Unable to create appointment at this time.", error_log: @appointment.errors.full_messages}, :status => :unprocessable_entity

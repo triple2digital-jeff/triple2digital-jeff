@@ -24,7 +24,10 @@ class Api::V1::EventsController < ApplicationController
     @event = Event.new(event_params)
     @event.start_date = params[:event][:start_date].gsub("  ", " +")
     @event.end_date = params[:event][:end_date].gsub("  ", " +")
+    
     if @event.save
+      tokens =  UserDevice.active.pluck(:push_token)
+      FcmPush.new.send_push_notification('',"#{@event.owner.first_name} created new event",tokens) if tokens.present?
       render json: @event, include: [:ticket_packages], user_id: @current_user
     else
       render :json => {:error => "Unable to create event at this time.", error_log: @event.errors.full_messages}, :status => :unprocessable_entity
@@ -58,7 +61,10 @@ class Api::V1::EventsController < ApplicationController
 
   # DELETE /events/1
   def destroy
+    event = @event
     if @event.destroy
+      tokens =  UserDevice.active.pluck(:push_token)
+      FcmPush.new.send_push_notification('',"#{event.owner.first_name} created new event",tokens) if tokens.present?
       render :json => {:success => "Event deleted successfully"}, :status => :ok
     else
       render :json => {:error => "Unable to delete event at this time.", error_log: @event.errors.full_messages}, :status => :unprocessable_entity
