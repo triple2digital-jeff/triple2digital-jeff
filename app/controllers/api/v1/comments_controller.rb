@@ -27,7 +27,7 @@ class Api::V1::CommentsController < ApplicationController
     if @comment.save
       user = @comment.post.user
       token = user.user_devices.active.pluck(:push_token)
-      FcmPush.new.send_push_notification('',"#{@comment.user.first_name} comment your post",token) if device.present?
+      FcmPush.new.send_push_notification('',"#{@comment.user.first_name} comment your post",token) if token.present?
       render json: @comment, status: :created
     else
       render :json => {:error => "Unable to create comment at this time.", error_log: @comment.errors.full_messages}, :status => :unprocessable_entity

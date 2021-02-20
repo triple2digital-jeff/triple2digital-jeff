@@ -21,7 +21,7 @@ class Api::V1::EndorsementsController < ApplicationController
     @endorsement = Endorsement.new(endorsement_params)
     if @endorsement.save
       token = @endorsement.endorsed_to.user_devices.active.pluck(:push_token)
-      FcmPush.new.send_push_notification('',"You have been endorsed by #{@endorsement.endorsed_by.first_name}",token) if device.present?
+      FcmPush.new.send_push_notification('',"You have been endorsed by #{@endorsement.endorsed_by.first_name}",token) if token.present?
       render json: @endorsement, include: [:endorsed_by, :endorsed_to], status: :created
     else
       render :json => {:error => "Unable to create endorsement at this time.", error_log: @endorsement.errors.full_messages}, :status => :unprocessable_entity
@@ -43,7 +43,7 @@ class Api::V1::EndorsementsController < ApplicationController
       endorsement = @endorsement
       @endorsement.destroy
       token = endorsement.endorsed_to.user_devices.active.pluck(:push_token)
-      FcmPush.new.send_push_notification('',"You have been removed endorsed by #{endorsement.endorsed_by.first_name}",token) if device
+      FcmPush.new.send_push_notification('',"You have been removed endorsed by #{endorsement.endorsed_by.first_name}",token) if token.present?
       render :json => {:success => "Un endorsed successfully"}, :status => :ok
     rescue
       render :json => {:error => "Unable to un endorse this time. Please try again later."}, :status => :unprocessable_entity
