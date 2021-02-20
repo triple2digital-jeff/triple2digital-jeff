@@ -20,8 +20,8 @@ class Api::V1::EndorsementsController < ApplicationController
   def create
     @endorsement = Endorsement.new(endorsement_params)
     if @endorsement.save
-      device = @endorsement.endorsed_to.user_devices.active.first
-      FcmPush.new.send_push_notification('',"You have been endorsed by #{@endorsement.endorsed_by.first_name}",device.try(:push_token), device.try(:platform)) if device.present?
+      token = @endorsement.endorsed_to.user_devices.active.pluck(:push_token)
+      FcmPush.new.send_push_notification('',"You have been endorsed by #{@endorsement.endorsed_by.first_name}",token) if device.present?
       render json: @endorsement, include: [:endorsed_by, :endorsed_to], status: :created
     else
       render :json => {:error => "Unable to create endorsement at this time.", error_log: @endorsement.errors.full_messages}, :status => :unprocessable_entity
@@ -42,8 +42,8 @@ class Api::V1::EndorsementsController < ApplicationController
       @endorsement = Endorsement.where(endorsed_to_id: params[:endorsed_to_id], endorsed_by_id: params[:endorsed_by_id]).first
       endorsement = @endorsement
       @endorsement.destroy
-      device = endorsement.endorsed_to.user_devices.active.first
-      FcmPush.new.send_push_notification('',"You have been removed endorsed by #{endorsement.endorsed_by.first_name}",device.try(:push_token), device.try(:platform)) if device
+      token = endorsement.endorsed_to.user_devices.active.pluck(:push_token)
+      FcmPush.new.send_push_notification('',"You have been removed endorsed by #{endorsement.endorsed_by.first_name}",token) if device
       render :json => {:success => "Un endorsed successfully"}, :status => :ok
     rescue
       render :json => {:error => "Unable to un endorse this time. Please try again later."}, :status => :unprocessable_entity
