@@ -106,7 +106,7 @@ class Api::V1::PostsController < ApplicationController
     @new_post.parent_id = @post.id
     if @new_post.save
       nuser = @post.user
-      if user.is_shares
+      if nuser.is_shares
         token = nuser.user_devices.active.pluck(:push_token)
         FcmPush.new.send_push_notification('',"#{@new_post.user.first_name} shared your post",token) if token.present?
       end
