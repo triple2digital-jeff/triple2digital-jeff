@@ -11,9 +11,9 @@ class EventMailer < ApplicationMailer
     mail(to: @buyer.email, subject: 'You Have Purcahsed Tickets For Event '+ event.title)
   end
 
-  def contact_as(user, content)
+  def contact_as(user, content, subject)
     @user = user
     @content = content
-    mail(to: "profilerlife1@gmail.com", from: user.email, subject: 'Feedback Query')
+    mail(to: "profilerlife1@gmail.com", from: user.email, subject: subject)
   end
 end

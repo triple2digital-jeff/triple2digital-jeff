@@ -227,7 +227,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def contact_as
-    EventMailer.contact_as(@user, params[:content]).deliver
+    EventMailer.contact_as(@user, params[:content], params[:subject]).deliver
     render json: {message: 'sent successfully'}
   end
 
