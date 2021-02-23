@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
   # skip_before_action :verify_authenticity_token
 
   before_action :verify_api_token, except: [:create, :forgot_password, :facebook_auth]
-  before_action :set_user, only: [:user_event_reviews, :get_bank_info, :payout, :total_earning, :recent_payouts, :add_stripe_token, :get_user_events, :show, :update, :destroy, :update_password, :update_user_skills, :get_user_services, :get_user_availed_services, :add_working_days, :get_unreviewed_events, :contact_as]
+  before_action :set_user, only: [:user_event_reviews, :get_bank_info, :payout, :total_earning, :recent_payouts, :add_stripe_token, :get_user_events, :show, :update, :destroy, :update_password, :update_user_skills, :get_user_services, :get_user_availed_services, :add_working_days, :get_unreviewed_events, :contact_as, :notifications, :update_notification]
   before_action :check_user_with_email, only: [:facebook_auth]
   before_action :check_fb_user, only: [:create]
   before_action :check_user_skill, only: [:update_user_skills]
@@ -229,6 +229,34 @@ class Api::V1::UsersController < ApplicationController
   def contact_as
     EventMailer.contact_as(@user, params[:content], params[:subject]).deliver
     render json: {message: 'sent successfully'}
+  end
+
+  def notifications
+  end
+
+  def update_notification
+    if params[:is_endrose].present?
+      @user.update(is_endrose: params[:is_endrose])
+    elsif params[:is_likes].present?
+      @user.update(is_likes: params[:is_likes])
+    elsif params[:is_comments].present?
+      @user.update(is_comments: params[:is_comments])
+    elsif params[:is_shares].present?
+      @user.update(is_shares: params[:is_shares])
+    elsif params[:is_tickets_sold].present?
+      @user.update(is_tickets_sold: params[:is_tickets_sold])
+    elsif params[:is_event_details].present?
+      @user.update(is_event_details: params[:is_event_details])
+    elsif params[:is_upcoming_events].present?
+      @user.update(is_upcoming_events: params[:is_upcoming_events])
+    elsif params[:is_book_service].present?
+      @user.update(is_book_service: params[:is_book_service])
+    elsif params[:is_service_notes].present?
+      @user.update(is_service_notes: params[:is_service_notes])
+    elsif params[:is_cancel_appointment].present?
+      @user.update(is_cancel_appointment: params[:is_cancel_appointment])
+    end
+        
   end
 
   private

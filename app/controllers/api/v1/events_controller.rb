@@ -26,8 +26,8 @@ class Api::V1::EventsController < ApplicationController
     @event.end_date = params[:event][:end_date].gsub("  ", " +")
     
     if @event.save
-      tokens =  UserDevice.active.pluck(:push_token)
-      FcmPush.new.send_push_notification('',"#{@event.owner.first_name} created new event",tokens) if tokens.present?
+      tokens =  UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:push_token)
+      FcmPush.new.send_push_notification('',"upcoming event",tokens) if tokens.present?
       render json: @event, include: [:ticket_packages], user_id: @current_user
     else
       render :json => {:error => "Unable to create event at this time.", error_log: @event.errors.full_messages}, :status => :unprocessable_entity
@@ -36,14 +36,16 @@ class Api::V1::EventsController < ApplicationController
 
   # PATCH/PUT /events/1
   def update
-
     p_ticket_packages = @event.ticket_packages.ids
     tmp_id = @event.id.to_s + '000000'
     @event.ticket_packages.update_all(event_id: tmp_id.to_i )
     if @event.update(event_params)
+      tokens =  UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:push_token)
+      FcmPush.new.send_push_notification('',"Event Changed",tokens) if tokens.present?
       @event.start_date = params[:event][:start_date].gsub("  ", " +")
       @event.end_date = params[:event][:end_date].gsub("  ", " +")
       @event.save!
+
       TicketPackage.where("id IN(?)", p_ticket_packages).destroy_all
       @event.reload
       render json: @event, include: [:ticket_packages], user_id: @current_user
@@ -63,8 +65,8 @@ class Api::V1::EventsController < ApplicationController
   def destroy
     event = @event
     if @event.destroy
-      tokens =  UserDevice.active.pluck(:push_token)
-      FcmPush.new.send_push_notification('',"#{event.owner.first_name} created new event",tokens) if tokens.present?
+      # tokens =  UserDevice.active.pluck(:push_token)
+      # FcmPush.new.send_push_notification('',"#{event.owner.first_name} created new event",tokens) if tokens.present?
       render :json => {:success => "Event deleted successfully"}, :status => :ok
     else
       render :json => {:error => "Unable to delete event at this time.", error_log: @event.errors.full_messages}, :status => :unprocessable_entity

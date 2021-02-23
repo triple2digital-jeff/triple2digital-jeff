@@ -17,7 +17,17 @@
 #  encrypted_password     :string           default(""), not null
 #  first_name             :string
 #  gender                 :string
+#  is_book_service        :boolean          default(TRUE), not null
+#  is_cancel_appointment  :boolean          default(TRUE), not null
+#  is_comments            :boolean          default(TRUE), not null
+#  is_endrose             :boolean          default(TRUE), not null
+#  is_event_details       :boolean          default(TRUE), not null
+#  is_likes               :boolean          default(TRUE), not null
+#  is_service_notes       :boolean          default(TRUE), not null
+#  is_shares              :boolean          default(TRUE), not null
 #  is_skilled             :boolean          default(FALSE)
+#  is_tickets_sold        :boolean          default(TRUE), not null
+#  is_upcoming_events     :boolean          default(TRUE), not null
 #  last_name              :string
 #  latitude               :float
 #  longitude              :float

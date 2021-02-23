@@ -22,8 +22,10 @@ class Api::V1::AppointmentsController < ApplicationController
     @appointment = Appointment.new(appointment_params)
     if @appointment.save
       user = @appointment.service.owner
-      token = user.user_devices.active.pluck(:push_token)
-      FcmPush.new.send_push_notification('',"You have new appointment",token) if token.present?
+      if user.is_book_service
+        token = user.user_devices.active.pluck(:push_token)
+        FcmPush.new.send_push_notification('',"You have new appointment",token) if token.present?
+      end
       render json: @appointment, include: {service: {include: :service_category}}
     else
       render :json => {:error => "Unable to create appointment at this time.", error_log: @appointment.errors.full_messages}, :status => :unprocessable_entity
@@ -33,6 +35,13 @@ class Api::V1::AppointmentsController < ApplicationController
   # PATCH/PUT /appointments/1
   def update
     if @appointment.update(appointment_params)
+      if params[:appointment][:note].present?
+        user = @appointment.service.owner
+        if user.is_service_notes
+          token = user.user_devices.active.pluck(:push_token)
+          FcmPush.new.send_push_notification('',"Note is added on your appointment",token) if token.present?
+        end
+      end
       render json: @appointment#, include: {owner:{}, working_days: {}, appointments:{ include: [:user]}}
     else
       render :json => {:error => "Unable to update record this time. Please try again later.", error_log: @appointment.errors.full_messages}, :status => :unprocessable_entity
@@ -41,7 +50,13 @@ class Api::V1::AppointmentsController < ApplicationController
 
   # DELETE /appointments/1
   def destroy
+    appointment = @appointment
     if @appointment.destroy
+      user = appointment.service.owner
+      if user.is_cancel_appointment
+        token = user.user_devices.active.pluck(:push_token)
+        FcmPush.new.send_push_notification('',"Your appointment have been cancelled",token) if token.present?
+      end
       render :json => {:success => "Appointment deleted successfully"}, :status => :ok
     else
       render :json => {:error => "Unable to delete appointment at this time.", error_log: @appointment.errors.full_messages}, :status => :unprocessable_entity

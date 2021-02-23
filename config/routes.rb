@@ -26,6 +26,8 @@ Rails.application.routes.draw do
           get :user_event_reviews
           post :contact_as
           get :visitors
+          get :notifications
+          put :update_notification
         end
         collection do
           put :forgot_password

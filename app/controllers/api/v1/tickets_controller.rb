@@ -24,6 +24,11 @@ class Api::V1::TicketsController < ApplicationController
       render json: {error: @json}, status: :unprocessable_entity and return unless validate_data
       registration = Event.register_for_event(ticket_params[:ticket_attributes], ticket_params[:buyer_id], @event)
       EventMailer.event_registration(@user, registration[0], registration[1], @event, registration[2], registration[3], false).deliver
+      nuser = @event.owner
+      if nuser.is_tickets_sold
+        token = nuser.user_devices.active.pluck(:push_token)
+        FcmPush.new.send_push_notification('',"Your ticket have been sold",token) if token.present?
+      end
       render json: {message: "Successfully bought #{registration[0]} #{'ticket'.pluralize(registration[0])}"}, status: :ok
     else
       render json: {error: 'Unable to create event at this time.', error_log: 'Please provide ticket attributes to process.'}, status: :unprocessable_entity

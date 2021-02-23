@@ -85,8 +85,11 @@ class Api::V1::PostsController < ApplicationController
       if params[:like] == '1'
         @post.post_likes.where(liked_by: @user).first_or_create
         msg= 'liked'
-        token = @post.user.user_devices.active.pluck(:push_token)
-        FcmPush.new.send_push_notification('',"#{@user.first_name} likes your post",token) if token.present?
+        nuser = @post.user
+        if nuser.is_likes
+          token = nuser.user_devices.active.pluck(:push_token)
+          FcmPush.new.send_push_notification('',"#{@user.first_name} likes your post",token) if token.present?
+        end
       else
         @post.post_likes.find_by_liked_by_id(@user.id).try(:destroy)
         msg= 'unliked'
@@ -98,16 +101,19 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def share_post
-      @new_post = @post.dup
-      @new_post.user_id = @user.id
-      @new_post.parent_id = @post.id
-      if @new_post.save
-        token = @post.user.user_devices.active.pluck(:push_token)
+    @new_post = @post.dup
+    @new_post.user_id = @user.id
+    @new_post.parent_id = @post.id
+    if @new_post.save
+      nuser = @post.user
+      if user.is_shares
+        token = nuser.user_devices.active.pluck(:push_token)
         FcmPush.new.send_push_notification('',"#{@new_post.user.first_name} shared your post",token) if token.present?
-        render :json => @new_post, include: {comments:{}, user:{methods: [ :title, :is_confirmed]}}, methods: [:likes_count, :comments_count, :shared_count, :parent_user] #{:success => "Post has been shared successfully."}, :status => :ok
-      else
-        render :json => {:error => "Unable to share post this time. Please try again later.", error_log: @new_post.errors.full_messages}, :status => :unprocessable_entity
       end
+      render :json => @new_post, include: {comments:{}, user:{methods: [ :title, :is_confirmed]}}, methods: [:likes_count, :comments_count, :shared_count, :parent_user] #{:success => "Post has been shared successfully."}, :status => :ok
+    else
+      render :json => {:error => "Unable to share post this time. Please try again later.", error_log: @new_post.errors.full_messages}, :status => :unprocessable_entity
+    end
   end
 
   def post_reactions
