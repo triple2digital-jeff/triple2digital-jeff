@@ -29,6 +29,7 @@ class Api::V1::CommentsController < ApplicationController
       if user.is_comments
         token = user.user_devices.active.pluck(:push_token)
         FcmPush.new.send_push_notification('',"#{@comment.user.first_name} comment your post",token) if token.present?
+        user.notifications.create(notification_type: 'comment', description: "#{@comment.user.first_name} comment your post", notifier_id: @comment.user.try(:id), object_id: @comment.post.id)
       end
       render json: @comment, status: :created
     else

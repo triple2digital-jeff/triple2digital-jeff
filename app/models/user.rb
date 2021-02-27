@@ -85,6 +85,7 @@ class User < ApplicationRecord
   has_many :visitors, through: :visits
 
   has_many :user_connections
+  has_many :notifications
 
   has_many :connections, through: :user_connections do
     def approved
@@ -562,15 +563,18 @@ class User < ApplicationRecord
     users = users.where("gender ILIKE ?", options[:gender]) if options[:gender].present?
     # by/ebug
     if options[:skill].present?
-      skill_qry =  options[:skill].to_i.eql?(0) ? "skills.title ILIKE ?" : "skills.id =?"
-      users = users.joins(:skill).where(skill_qry, options[:skill]).distinct
+      skills = options[:skill].split(",")
+      skill_qry =  options[:skill].to_i.eql?(0) ? "skills.title ILIKE ?" : "skills.id IN (?)"
+      users = users.joins(:skill).where(skill_qry, skills).distinct
     end
     if options[:sub_skill].present?
-      sub_skill_qry =  options[:skill].to_i.eql?(0) ? "sub_skills.title ILIKE ?" : "sub_skills.id=?"
-      users = users.joins(:sub_skill).where(sub_skill_qry, options[:sub_skill]).distinct
+      sub_skills = options[:sub_skill].split(",")
+      sub_skill_qry =  options[:sub_skill].to_i.eql?(0) ? "sub_skills.title ILIKE ?" : "sub_skills.id IN (?)"
+      users = users.joins(:sub_skill).where(sub_skill_qry, sub_skills).distinct
     end
     if options[:category].present?
-      users= users.joins(:categories).where("categories.id=?", options[:category]).distinct
+      categories = options[:category].split(",")
+      users= users.joins(:categories).where("categories.id IN (?)", categories).distinct
     end
     users
   end

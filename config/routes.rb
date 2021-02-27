@@ -28,6 +28,7 @@ Rails.application.routes.draw do
           get :visitors
           get :notifications
           put :update_notification
+          get :fetch_notifications
         end
         collection do
           put :forgot_password

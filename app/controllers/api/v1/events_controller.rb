@@ -27,7 +27,11 @@ class Api::V1::EventsController < ApplicationController
     
     if @event.save
       tokens =  UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:push_token)
-      FcmPush.new.send_push_notification('',"upcoming event",tokens) if tokens.present?
+      ids = UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:id)
+      if tokens.present?
+        FcmPush.new.send_push_notification('',"upcoming event",tokens)
+        Notification.import_record(ids, @event)
+      end
       render json: @event, include: [:ticket_packages], user_id: @current_user
     else
       render :json => {:error => "Unable to create event at this time.", error_log: @event.errors.full_messages}, :status => :unprocessable_entity
@@ -41,7 +45,11 @@ class Api::V1::EventsController < ApplicationController
     @event.ticket_packages.update_all(event_id: tmp_id.to_i )
     if @event.update(event_params)
       tokens =  UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:push_token)
-      FcmPush.new.send_push_notification('',"Event Changed",tokens) if tokens.present?
+      if tokens.present?
+        FcmPush.new.send_push_notification('',"Event Changed",tokens)
+        ids = UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:id)
+        Notification.import_update(ids, @event)
+      end 
       @event.start_date = params[:event][:start_date].gsub("  ", " +")
       @event.end_date = params[:event][:end_date].gsub("  ", " +")
       @event.save!

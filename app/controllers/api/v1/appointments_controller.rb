@@ -25,6 +25,7 @@ class Api::V1::AppointmentsController < ApplicationController
       if user.is_book_service
         token = user.user_devices.active.pluck(:push_token)
         FcmPush.new.send_push_notification('',"You have new appointment",token) if token.present?
+        user.notifications.create(notification_type: 'appointment', description: "You have new appointment", notifier_id: @appointment.user.try(:id), object_id: @appointment.id)
       end
       render json: @appointment, include: {service: {include: :service_category}}
     else
@@ -40,6 +41,7 @@ class Api::V1::AppointmentsController < ApplicationController
         if user.is_service_notes
           token = user.user_devices.active.pluck(:push_token)
           FcmPush.new.send_push_notification('',"Note is added on your appointment",token) if token.present?
+          user.notifications.create(notification_type: 'appointment_note', description: "Note is added on your appointment", notifier_id: @appointment.user.try(:id), object_id: @appointment.id)
         end
       end
       render json: @appointment#, include: {owner:{}, working_days: {}, appointments:{ include: [:user]}}
@@ -56,6 +58,7 @@ class Api::V1::AppointmentsController < ApplicationController
       if user.is_cancel_appointment
         token = user.user_devices.active.pluck(:push_token)
         FcmPush.new.send_push_notification('',"Your appointment have been cancelled",token) if token.present?
+        user.notifications.create(notification_type: 'appointment_cancel', description: "Your appointment have been cancelled", notifier_id: appointment.user.try(:id), object_id: appointment.id)
       end
       render :json => {:success => "Appointment deleted successfully"}, :status => :ok
     else

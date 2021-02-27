@@ -24,6 +24,7 @@ class Api::V1::EndorsementsController < ApplicationController
       if nuser.is_endrose
         token = nuser.user_devices.active.pluck(:push_token)
         FcmPush.new.send_push_notification('',"You have been endorsed by #{@endorsement.endorsed_by.first_name}",token) if token.present?
+        nuser.notifications.create(notification_type: 'endorsement', description: "You have been endorsed by #{@endorsement.endorsed_by.first_name}", notifier_id:@endorsement.endorsed_by.try(:id), object_id: @endorsement.id)
       end
       render json: @endorsement, include: [:endorsed_by, :endorsed_to], status: :created
     else
@@ -49,6 +50,7 @@ class Api::V1::EndorsementsController < ApplicationController
       if nuser.is_endrose
         token = nuser.user_devices.active.pluck(:push_token)
         FcmPush.new.send_push_notification('',"You have been removed endorsed by #{endorsement.endorsed_by.first_name}",token) if token.present?
+        nuser.notifications.create(notification_type: 'unendorsement', description: "You have been removed endorsed by #{endorsement.endorsed_by.first_name}", notifier_id: endorsement.endorsed_by.try(:id), object_id: endorsement.id)
       end
       render :json => {:success => "Un endorsed successfully"}, :status => :ok
     rescue
