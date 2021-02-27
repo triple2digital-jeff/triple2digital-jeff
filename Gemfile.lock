@@ -35,6 +35,8 @@ GEM
       activemodel (= 5.2.3)
       activesupport (= 5.2.3)
       arel (>= 9.0)
+    activerecord-import (1.0.8)
+      activerecord (>= 3.2)
     activestorage (5.2.3)
       actionpack (= 5.2.3)
       activerecord (= 5.2.3)
@@ -1037,6 +1039,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_storage_validations
+  activerecord-import
   annotate
   aws-sdk (~> 3)
   aws-sdk-s3
@@ -1086,4 +1089,5 @@ DEPENDENCIES
 RUBY VERSION
    ruby 2.5.1p57
 
-
+BUNDLED WITH
+   1.16.2
