@@ -27,7 +27,7 @@ class Api::V1::EventsController < ApplicationController
     
     if @event.save
       tokens =  UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:push_token)
-      ids = UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:id)
+      ids = UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:user_id)
       if tokens.present?
         FcmPush.new.send_push_notification('',"upcoming event",tokens)
         Notification.import_record(ids, @event)
@@ -47,7 +47,7 @@ class Api::V1::EventsController < ApplicationController
       tokens =  UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:push_token)
       if tokens.present?
         FcmPush.new.send_push_notification('',"Event Changed",tokens)
-        ids = UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:id)
+        ids = UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:user_id)
         Notification.import_update(ids, @event)
       end 
       @event.start_date = params[:event][:start_date].gsub("  ", " +")
