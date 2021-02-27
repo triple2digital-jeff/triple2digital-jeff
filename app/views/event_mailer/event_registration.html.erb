@@ -22,7 +22,7 @@
               </tr>
               <tr>
                 <td valign="top" align="center">
-                  <a href="<%= ENV["MY_HOST"] %>" style="display:inline-block; cursor:pointer; text-align:center;">
+                  <a href="app.profilerlife.com" style="display:inline-block; cursor:pointer; text-align:center;">
                     Profiler
                   </a>
                 </td>
@@ -147,7 +147,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td> Activation Link: <%= link_to "Confirm My Account", ENV["MY_HOST"]+Rails.application.routes.url_helpers.user_confirmation_url(confirmation_token: @buyer.confirmation_token, only_path: true)%>
+                      <td> Activation Link: <%= link_to "Confirm My Account", "app.profilerlife.com"+Rails.application.routes.url_helpers.user_confirmation_url(confirmation_token: @buyer.confirmation_token, only_path: true)%>
                       </td>
                     </tr>
                     <tr><td>Email: <%= @buyer.email %></td></tr>
@@ -174,7 +174,7 @@
               </tr>
               <tr>
                 <td valign="top" align="center"> <span style="color:#9EB0C9; font-size:10px;">&copy;
-                  <a href="<%= ENV["MY_HOST"] %>" target="_blank" style="color:#9EB0C9 !important; text-decoration:none;">Profiler</a> 2019
+                  <a href="app.profilerlife.com" target="_blank" style="color:#9EB0C9 !important; text-decoration:none;">Profiler</a> 2019
                           </span>
 
                 </td>
