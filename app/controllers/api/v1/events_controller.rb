@@ -29,7 +29,7 @@ class Api::V1::EventsController < ApplicationController
       tokens =  UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:push_token)
       ids = UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:user_id)
       if tokens.present?
-        FcmPush.new.send_push_notification('',"upcoming event",tokens)
+        FcmPush.new.send_push_notification('',"#{@event.owner.first_name} post upcoming event",tokens)
         Notification.import_record(ids, @event)
       end
       render json: @event, include: [:ticket_packages], user_id: @current_user
@@ -46,7 +46,7 @@ class Api::V1::EventsController < ApplicationController
     if @event.update(event_params)
       tokens =  UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:push_token)
       if tokens.present?
-        FcmPush.new.send_push_notification('',"Event Changed",tokens)
+        FcmPush.new.send_push_notification('',"#{event.owner.first_name} changed details for an event",tokens)
         ids = UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:user_id)
         Notification.import_update(ids, @event)
       end 

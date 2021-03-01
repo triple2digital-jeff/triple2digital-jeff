@@ -24,7 +24,7 @@ class Notification < ApplicationRecord
     ids.each do |user_id|
       testArr << {
                     user_id: user_id,
-                    description: "upcoming event",
+                    description: "#{event.owner.first_name} post upcoming event",
                     notification_type: "event_create",
                     notifier_id: event.owner_id,
                     object_id: event.id
@@ -38,7 +38,7 @@ class Notification < ApplicationRecord
     ids.each do |user_id|
       testArr << {
                     user_id: user_id,
-                    description: "Event Change",
+                    description: "#{event.owner.first_name} changed details for an event",
                     notification_type: "event_change",
                     notifier_id: event.owner_id,
                     object_id: event.id

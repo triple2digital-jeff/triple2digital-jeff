@@ -88,7 +88,8 @@ class Api::V1::PostsController < ApplicationController
         nuser = @post.user
         if nuser.is_likes
           token = nuser.user_devices.active.pluck(:push_token)
-          FcmPush.new.send_push_notification('',"#{@user.first_name} likes your post",token) if token.present?
+          FcmPush.new.send_push_notification('',"#{@user.first_name} liked your post",token) if token.present?
+          nuser.notifications.create(notification_type: 'like_post', description: "#{@user.first_name} liked your post", notifier_id: nuser.try(:id), object_id: @post.id)
         end
       else
         @post.post_likes.find_by_liked_by_id(@user.id).try(:destroy)
@@ -109,6 +110,7 @@ class Api::V1::PostsController < ApplicationController
       if nuser.is_shares
         token = nuser.user_devices.active.pluck(:push_token)
         FcmPush.new.send_push_notification('',"#{@new_post.user.first_name} shared your post",token) if token.present?
+        nuser.notifications.create(notification_type: 'shared_post', description: "#{@new_post.user.first_name} shared your post", notifier_id: nuser.try(:id), object_id: @post.id)
       end
       render :json => @new_post, include: {comments:{}, user:{methods: [ :title, :is_confirmed]}}, methods: [:likes_count, :comments_count, :shared_count, :parent_user] #{:success => "Post has been shared successfully."}, :status => :ok
     else

@@ -24,8 +24,8 @@ class Api::V1::AppointmentsController < ApplicationController
       user = @appointment.service.owner
       if user.is_book_service
         token = user.user_devices.active.pluck(:push_token)
-        FcmPush.new.send_push_notification('',"You have new appointment",token) if token.present?
-        user.notifications.create(notification_type: 'appointment', description: "You have new appointment", notifier_id: @appointment.user.try(:id), object_id: @appointment.id)
+        FcmPush.new.send_push_notification('',"#{@appointment.user.first_name} booked an appointment",token) if token.present?
+        user.notifications.create(notification_type: 'appointment', description: "#{@appointment.user.first_name} booked an appointment", notifier_id: @appointment.user.try(:id), object_id: @appointment.id)
       end
       render json: @appointment, include: {service: {include: :service_category}}
     else
@@ -40,8 +40,8 @@ class Api::V1::AppointmentsController < ApplicationController
         user = @appointment.service.owner
         if user.is_service_notes
           token = user.user_devices.active.pluck(:push_token)
-          FcmPush.new.send_push_notification('',"Note is added on your appointment",token) if token.present?
-          user.notifications.create(notification_type: 'appointment_note', description: "Note is added on your appointment", notifier_id: @appointment.user.try(:id), object_id: @appointment.id)
+          FcmPush.new.send_push_notification('',"#{@appointment.user.first_name} updated their appointment",token) if token.present?
+          user.notifications.create(notification_type: 'appointment_update', description: "#{@appointment.user.first_name} updated their appointment", notifier_id: @appointment.user.try(:id), object_id: @appointment.id)
         end
       end
       render json: @appointment#, include: {owner:{}, working_days: {}, appointments:{ include: [:user]}}

@@ -34,6 +34,9 @@ class Api::V1::UserConnectionsController < ApplicationController
   def create
     @user_connection = UserConnection.new(user_connection_params)
     if @user_connection.save
+      token = @user_connection.user.user_devices.active.pluck(:push_token)
+        FcmPush.new.send_push_notification('',"#{@user_connection.connection.first_name} sent a link request",token) if token.present?
+        @user_connection.user.notifications.create(notification_type: 'user_connection', description: "#{@user_connection.connection.first_name} sent a link request", notifier_id: @user_connection.user.id, object_id: @user_connection.id)
       render json: @user_connection, status: :created
     else
       render :json => {:error => "Unable to create connection at this time.", error_log: @user_connection.errors.full_messages}, :status => :unprocessable_entity

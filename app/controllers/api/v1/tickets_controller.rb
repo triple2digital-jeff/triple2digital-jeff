@@ -27,7 +27,8 @@ class Api::V1::TicketsController < ApplicationController
       nuser = @event.owner
       if nuser.is_tickets_sold
         token = nuser.user_devices.active.pluck(:push_token)
-        FcmPush.new.send_push_notification('',"Your ticket have been sold",token) if token.present?
+        FcmPush.new.send_push_notification('',"#{@user.first_name} Purchased an event ticket",token) if token.present?
+        nuser.notifications.create(notification_type: 'purchased_ticket', description: "#{@user.first_name} Purchased an event ticket", notifier_id: @user.try(:id), object_id: @event.id)
       end
       render json: {message: "Successfully bought #{registration[0]} #{'ticket'.pluralize(registration[0])}"}, status: :ok
     else

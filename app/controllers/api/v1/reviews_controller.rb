@@ -23,7 +23,8 @@ class Api::V1::ReviewsController < ApplicationController
     if @review.save
       user = @review.reviewable.owner
       token = user.user_devices.active.pluck(:push_token)
-      FcmPush.new.send_push_notification('',"You got a review on your #{@review.reviewable_type}",token) if token.present?
+      FcmPush.new.send_push_notification('',"Left a review for your #{@review.reviewable_type}",token) if token.present?
+      user.notifications.create(notification_type: 'left_review', description: "Left a review for your #{@review.reviewable_type}", notifier_id: user.try(:id), object_id: @review.id)
       render json: @review, include: [:user]
     else
       render :json => {:error => "Unable to create review at this time.", error_log: @review.errors.full_messages}, :status => :unprocessable_entity
