@@ -44,12 +44,20 @@ class Api::V1::EventsController < ApplicationController
     tmp_id = @event.id.to_s + '000000'
     @event.ticket_packages.update_all(event_id: tmp_id.to_i )
     if @event.update(event_params)
-      tokens =  UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:push_token)
+
+      tokens =  UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:push_token)
+      ids = UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:user_id)
       if tokens.present?
-        FcmPush.new.send_push_notification('',"#{event.owner.first_name} changed details for an event",tokens)
-        ids = UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:user_id)
-        Notification.import_update(ids, @event)
-      end 
+        FcmPush.new.send_push_notification('',"#{@event.owner.first_name} post upcoming event",tokens)
+        Notification.import_record(ids, @event)
+      end
+      
+      # tokens =  UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:push_token)
+      # if tokens.present?
+      #   FcmPush.new.send_push_notification('',"#{@event.owner.first_name} changed details for an event",tokens)
+      #   ids = UserDevice.joins(:user).active.where.not("users.is_event_details = ?", "false").pluck(:user_id)
+      #   Notification.import_update(ids, @event)
+      # end 
       @event.start_date = params[:event][:start_date].gsub("  ", " +")
       @event.end_date = params[:event][:end_date].gsub("  ", " +")
       @event.save!
