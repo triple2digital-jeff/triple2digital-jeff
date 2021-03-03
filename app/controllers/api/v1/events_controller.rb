@@ -26,12 +26,12 @@ class Api::V1::EventsController < ApplicationController
     @event.end_date = params[:event][:end_date].gsub("  ", " +")
     
     if @event.save
-      tokens =  UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:push_token)
-      ids = UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:user_id)
-      if tokens.present?
-        FcmPush.new.send_push_notification('',"#{@event.owner.first_name} post upcoming event",tokens)
-        Notification.import_record(ids, @event)
-      end
+      # tokens =  UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:push_token)
+      # ids = UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:user_id)
+      # if tokens.present?
+      #   FcmPush.new.send_push_notification('',"#{@event.owner.first_name} post upcoming event",tokens)
+      #   Notification.import_record(ids, @event)
+      # end
       render json: @event, include: [:ticket_packages], user_id: @current_user
     else
       render :json => {:error => "Unable to create event at this time.", error_log: @event.errors.full_messages}, :status => :unprocessable_entity
