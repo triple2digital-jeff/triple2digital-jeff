@@ -392,7 +392,8 @@ class User < ApplicationRecord
   end
 
   def total_payouts(event_ids = events.pluck(:id))
-    Payment.where("event_id IN(?)", event_ids).sum(:amount)
+    #Payment.where("event_id IN(?)", event_ids).sum(:amount)
+    Payment.where("user_id = ?", id).sum(:amount)/100
   end
 
   def balanced_amount
