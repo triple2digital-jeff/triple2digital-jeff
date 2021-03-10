@@ -10,7 +10,7 @@ class StripeCustomer
 
   def charge
     success = true
-    if self.is_tax_by_creator
+    if self.event.is_tax_by_creator
       company_share = 0.0
       total_amount = self.amount * 100.0
     else
