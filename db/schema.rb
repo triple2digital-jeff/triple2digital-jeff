@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_27_061236) do
+ActiveRecord::Schema.define(version: 2021_03_10_143425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 2021_02_27_061236) do
     t.boolean "is_recurring", default: false
     t.integer "recurring_type", default: 0
     t.integer "is_enabled", default: 0
+    t.boolean "is_tax_by_creator", default: false
   end
 
   create_table "messages", force: :cascade do |t|

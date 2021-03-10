@@ -9,8 +9,14 @@ class StripeCustomer
 
   def charge
     success = true
-    company_share = self.amount * 25.0 / 100.0
-    total_amount = (self.amount + company_share) * 100.0
+    if self.is_tax_by_creator
+
+    else
+      company_share = (self.amount * 1.25 / 100.0) + 0.60
+      total_amount = (self.amount + company_share) * 100.0
+      # company_share = self.amount * 25.0 / 100.0
+      # total_amount = (self.amount + company_share) * 100.0
+    end
 
     begin
       stripe_charge = Stripe::Charge.create({
