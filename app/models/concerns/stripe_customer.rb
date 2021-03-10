@@ -5,7 +5,6 @@ class StripeCustomer
     self.amount = amount.to_f
     self.event = event
     self.owner = event.owner if event
-    self.is_tax_by_creator = event.is_tax_by_creator if event
   end
 
   def charge
