@@ -18,11 +18,11 @@ class StripeCustomer
       total = total + (package['price']*package['required_tickets'])
     end
     if self.event.is_tax_by_creator
-      total_amount = (total + company_share) * 100.0
-      actual_amount = total
-    else
       total_amount = (total) * 100.0
       actual_amount = (total - company_share) * 100.0
+    else
+      total_amount = (total + company_share) * 100.0
+      actual_amount = total
     end
 
     begin

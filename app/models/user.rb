@@ -397,7 +397,7 @@ class User < ApplicationRecord
   end
 
   def balanced_amount
-    total_earnings - total_payouts
+    (total_earnings - total_payouts)/100
   end
 
   # def jobs_as_worker
