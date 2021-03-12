@@ -196,7 +196,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def recent_payouts
-    render json: {total_earnings:  @user.total_earnings, balanced_amount: @user.balanced_amount, payouts: @user.payments, pending_amount: 0.0}
+    render json: {total_earnings:  @user.total_earnings, balanced_amount: @user.balanced_amount.round(2), payouts: @user.payments, pending_amount: 0.0}
   end
 
   def total_earning
