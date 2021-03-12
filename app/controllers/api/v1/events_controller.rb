@@ -165,7 +165,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def charge_event
-    response = StripeCustomer.new(@user, params[:amount], @event).charge
+    response = StripeCustomer.new(@user, params[:amount], @event, params).charge
     if response
     render :json => {:success => "Charge has been created successfully"}, :status => 200
     else
