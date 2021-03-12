@@ -13,9 +13,11 @@ class StripeCustomer
     total = 0
     company_share = 0
     params['event']['ticket_packages'].each do |package|
-      single_fee = (package['price'] * 1.25 / 100.0) + 0.60
-      company_share = company_share + single_fee*package['required_tickets']
-      total = total + (package['price']*package['required_tickets'])
+      if package['required_tickets'].present?
+        single_fee = (package['price'] * 1.25 / 100.0) + 0.60
+        company_share = company_share + single_fee*package['required_tickets']
+        total = total + (package['price']*package['required_tickets'])
+      end
     end
     if self.event.is_tax_by_creator
       total_amount = (total) * 100.0
