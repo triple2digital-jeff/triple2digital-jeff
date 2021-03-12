@@ -1,22 +1,28 @@
 class StripeCustomer
-  attr_accessor :user, :amount, :event, :owner, :errors
-  def initialize(user, amount = 100 , event = nil)
+  attr_accessor :user, :amount, :event, :owner, :errors, :params
+  def initialize(user, amount = 100 , event = nil, params = {})
     self.user = user
     self.amount = amount.to_f
     self.event = event
     self.owner = event.owner if event
+    self.params = params
   end
 
   def charge
     success = true
+    total = 0
+    company_share = 0
+    params['event']['ticket_packages'].each do |package|
+      single_fee = (package['price'] * 1.25 / 100.0) + 0.60
+      company_share = company_share + single_fee*package['required_tickets']
+      total = total + (package['price']*package['required_tickets'])
+    end
     if self.event.is_tax_by_creator
-      company_share = 0.0
-      total_amount = self.amount * 100.0
+      total_amount = (total + company_share) * 100.0
+      actual_amount = total
     else
-      company_share = (self.amount * 1.25 / 100.0) + 0.60
-      total_amount = (self.amount + company_share) * 100.0
-      # company_share = self.amount * 25.0 / 100.0
-      # total_amount = (self.amount + company_share) * 100.0
+      total_amount = (total) * 100.0
+      actual_amount = total - company_share
     end
 
     begin
@@ -29,7 +35,8 @@ class StripeCustomer
                   })
 
       Charge.create!(
-          amount: total_amount,
+          total_amount: total_amount,
+          amount: actual_amount,
           stripe_id: stripe_charge[:id],
           company_share: company_share * 100.0,
           user_id: self.user.id,
