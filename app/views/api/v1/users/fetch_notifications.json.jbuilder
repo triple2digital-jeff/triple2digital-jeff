@@ -45,7 +45,7 @@ json.array!(@notifications) do |notify|
     json.profile_url user.present? ? user.profile_img : nil
     user_con = User.find_by(id: notify.user_id)
     if user_con.present?
-      json.is_link_sent user_con.user_connections.where(connection_id: notify.notifier_id).first
+      json.is_link_sent user_con.user_connections.where(connection_id: notify.notifier_id).first.present?
     else
       json.is_link_sent nil
     end
