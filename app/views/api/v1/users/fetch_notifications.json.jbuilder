@@ -52,7 +52,7 @@ json.array!(@notifications) do |notify|
   elsif notify.notification_type == "left_review"
     json.event_type notify.notification_type
     review = Review.find_by(id: notify.object_id)
-    json.object_id review.reviewable_id if review.reviewable_type=="Event"
+    json.object_id review.reviewable_id if review.present? && review.reviewable_type=="Event"
   elsif notify.notification_type == "purchased_ticket"
     json.event_type notify.notification_type
     json.object_id notify.object_id
