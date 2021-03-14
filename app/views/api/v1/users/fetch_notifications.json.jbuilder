@@ -4,9 +4,15 @@ json.array!(@notifications) do |notify|
   if notify.notification_type == "endorsement"
     json.event_type notify.notification_type
     json.object_id notify.notifier_id
+    user = User.find_by(id: notify.notifier_id)
+    json.profile_url user.present? ? user.profile_img : nil
+    json.is_endorsed user.endorsements.where(endorsed_by_id: notify.user_id).first.present?
   elsif notify.notification_type == "unendorsement"
     json.event_type notify.notification_type
     json.object_id notify.notifier_id
+    user = User.find_by(id: notify.notifier_id)
+    json.profile_url user.present? ? user.profile_img : nil
+    json.is_endorsed user.endorsements.where(endorsed_by_id: notify.user_id).first.present?
   elsif notify.notification_type == "appointment"
     json.event_type notify.notification_type
     appointment = Appointment.find_by(id: notify.object_id)
@@ -31,6 +37,14 @@ json.array!(@notifications) do |notify|
   elsif notify.notification_type == "user_connection"
     json.event_type notify.notification_type
     json.object_id notify.notifier_id
+    user = User.find_by(id: notify.notifier_id)
+    json.profile_url user.present? ? user.profile_img : nil
+    user_con = User.find_by(id: notify.user_id)
+    if user_con.present?
+      json.is_link_sent user_con.user_connections.where(connection_id: notify.notifier_id).first
+    else
+      json.is_link_sent nil
+    end
   elsif notify.notification_type == "left_review"
     json.event_type notify.notification_type
     review = Review.find_by(id: notify.object_id)
