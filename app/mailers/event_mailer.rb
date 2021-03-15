@@ -14,6 +14,6 @@ class EventMailer < ApplicationMailer
   def contact_as(user, content, subject)
     @user = user
     @content = content
-    mail(to: "profilerlife1@gmail.com", from: user.email, subject: subject)
+    mail(to: "connect@profilerlife.com", from: user.email, subject: subject)
   end
 end

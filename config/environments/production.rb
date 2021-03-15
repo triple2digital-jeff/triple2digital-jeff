@@ -96,7 +96,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: 'app.profilerlife.com' }
-  config.action_mailer.default_options = { from: 'profilerlife1@gmail.com' }
+  config.action_mailer.default_options = { from: 'connect@profilerlife.com' }
   config.action_mailer.delivery_method = :smtp
   
   ActionMailer::Base.smtp_settings = {
