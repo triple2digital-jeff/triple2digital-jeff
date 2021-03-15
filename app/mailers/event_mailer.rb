@@ -8,7 +8,7 @@ class EventMailer < ApplicationMailer
     @total_price = total_price
     @tickets = tickets
     @external_user_p = external_user
-    mail(to: @buyer.email, subject: 'You Have Purcahsed Tickets For Event '+ event.title)
+    mail(to: @buyer.email, subject: 'You Have Purcahsed Tickets For Event '+ event.title, from: "connect@profilerlife.com")
   end
 
   def contact_as(user, content, subject)
