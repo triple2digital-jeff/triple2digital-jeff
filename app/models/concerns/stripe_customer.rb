@@ -30,7 +30,7 @@ class StripeCustomer
 
     begin
       stripe_charge = Stripe::Charge.create({
-                      amount: total_amount/100,
+                      amount: total_amount.to_i,
                       currency: 'usd',
                       customer: self.user.stripe_token,
                       description: "user id => #{self.user.id} and owner_id => #{self.owner.id} and event_id => #{self.event.id}",
