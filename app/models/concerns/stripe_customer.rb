@@ -29,7 +29,7 @@ class StripeCustomer
     end
 
     begin
-      puts "#{total_amount}"
+      puts "test #{total_amount}"
       stripe_charge = Stripe::Charge.create({
                       amount: total_amount.to_i,
                       currency: 'usd',
