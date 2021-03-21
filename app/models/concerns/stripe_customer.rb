@@ -25,7 +25,7 @@ class StripeCustomer
     else
       #total = total * 100.0
       total_amount = (total + company_share) * 100.0
-      actual_amount = total
+      actual_amount = total * 100.0
     end
 
     begin

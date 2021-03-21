@@ -81,11 +81,11 @@ class User < ApplicationRecord
   has_many :endorsements, :foreign_key => 'endorsed_to_id', class_name: 'Endorsement', dependent: :destroy
   has_many :endorsed, :foreign_key => 'endorsed_by_id', class_name: 'Endorsement', dependent: :destroy
   has_many :report_posts, dependent: :destroy
-  has_many :visits
+  has_many :visits, dependent: :destroy
   has_many :visitors, through: :visits
 
   has_many :user_connections
-  has_many :notifications
+  has_many :notifications, dependent: :destroy
 
   has_many :connections, through: :user_connections do
     def approved
