@@ -22,6 +22,7 @@
 #  start_date        :datetime
 #  status            :string
 #  title             :string
+#  video_url         :text
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  owner_id          :integer

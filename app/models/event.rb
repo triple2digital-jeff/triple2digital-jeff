@@ -22,6 +22,7 @@
 #  start_date        :datetime
 #  status            :string
 #  title             :string
+#  video_url         :text
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  owner_id          :integer
@@ -81,6 +82,7 @@ class Event < ApplicationRecord
         dress_code: self.dress_code,
         speaker: self.speaker,
         cover_image: self.cover_image,
+        video_url: self.video_url,
         has_published: self.has_published?,
         max_tickets: self.max_tickets,
         is_recurring: self.is_recurring,

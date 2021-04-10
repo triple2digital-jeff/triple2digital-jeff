@@ -103,7 +103,7 @@ class Api::V1::ServicesController < ApplicationController
   # Only allow a trusted parameter “white list” through.
 
   def service_params
-    params.require(:service).permit(:title, :status, :note, :price, :owner_id, :is_private, :duration, :time_type, :cover_image, :service_category_id)
+    params.require(:service).permit(:title, :video_url, :status, :note, :price, :owner_id, :is_private, :duration, :time_type, :cover_image, :service_category_id)
   end
 
   def verify_api_token

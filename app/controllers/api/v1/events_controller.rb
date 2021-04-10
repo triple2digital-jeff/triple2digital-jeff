@@ -195,7 +195,7 @@ class Api::V1::EventsController < ApplicationController
 
   # Only allow a trusted parameter “white list” through.
   def event_params
-    params.require(:event).permit(:is_tax_by_creator, :latitude, :longitude, :address, :dress_code, :speaker, :start_date, :end_date, :title, :description, :status, :is_paid, :price, :owner_id, :cover_image, :has_published, :is_recurring, :recurring_type, :is_enabled, :max_tickets, ticket_packages_attributes: [:ticket_type, :price, :maximum_tickets])
+    params.require(:event).permit(:is_tax_by_creator, :video_url, :latitude, :longitude, :address, :dress_code, :speaker, :start_date, :end_date, :title, :description, :status, :is_paid, :price, :owner_id, :cover_image, :has_published, :is_recurring, :recurring_type, :is_enabled, :max_tickets, ticket_packages_attributes: [:ticket_type, :price, :maximum_tickets])
   end
 
   def verify_api_token

@@ -10,6 +10,7 @@
 #  disputed        :boolean          default(FALSE)
 #  refunded        :boolean          default(FALSE)
 #  stripe_response :text
+#  total_amount    :float
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  event_id        :integer

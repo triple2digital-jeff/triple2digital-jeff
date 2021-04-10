@@ -11,6 +11,7 @@
 #  status              :string
 #  time_type           :string           default("minutes")
 #  title               :string
+#  video_url           :text
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  owner_id            :integer
