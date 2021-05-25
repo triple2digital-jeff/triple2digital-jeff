@@ -519,7 +519,8 @@ class User < ApplicationRecord
     json_to_return=super(options.merge(opts))
     json_to_return[:has_endorsed] = has_endorsed(options[:current_user_id]) if options[:current_user_id].present?
     json_to_return[:has_connection] = has_connection(options[:current_user_id]) if options[:current_user_id].present?
-
+    json_to_return[:push_token] = user_devices.active.pluck(:push_token)[0]
+    
     return json_to_return
   end
 
