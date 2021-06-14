@@ -567,7 +567,7 @@ class User < ApplicationRecord
 
 
   def self.search(options = {})
-    users = User.all
+    users = User.all.confirmed
     users = users.near([options[:latitude], options[:longitude]], options[:distance] || 5, units: :km) if options[:latitude].present? && options[:longitude].present?
     users= users.where("dob >= ? OR dob IS NULL", (Date.today-options[:max_age].to_i.years).to_s.gsub('-', "/")) if options[:max_age].present?
     users = users.where("dob <= ? OR dob IS NULL", (Date.today-options[:min_age].to_i.years).to_s.gsub('-', "/")) if options[:min_age].present?
