@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
   # GET /users
   def index
     # @users = User.all
-    @users = params[:search_for].present? ? User.user_search_condition(params[:search_for]) : User.all
+    @users = params[:search_for].present? ? User.user_search_condition(params[:search_for]) : User.confirmed
     render json: @users, current_user_id: params[:user_id]
   end
 

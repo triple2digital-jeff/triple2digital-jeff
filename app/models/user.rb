@@ -34,6 +34,7 @@
 #  phone                  :string
 #  profile_img            :string           default("http://app.profilerlife.com/images/user.png")
 #  provider               :string
+#  refer_code             :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
@@ -114,6 +115,7 @@ class User < ApplicationRecord
 
   scope :attendies, -> { joins(:charges).uniq }
   scope :organizers, -> { joins(:events).uniq }
+  scope :confirmed, -> { where("confirmed_at IS NOT NULL") }
   # scope :attendies, joins(:payments)
   has_many :outgoing_payments, dependent: :destroy
 
@@ -303,6 +305,7 @@ class User < ApplicationRecord
   # Assign an API Token on create
   before_create do |user|
     user.api_token = User.generate_api_token
+    user.refer_code = User.generate_refer_token
   end
 
   # Generate a unique API Token
@@ -310,6 +313,13 @@ class User < ApplicationRecord
     loop do
       token = SecureRandom.base64.tr('+/=', 'Qrt')
       break token unless User.exists?(api_token: token)
+    end
+  end
+
+  def self.generate_refer_token
+    loop do
+      token = rand(36**8).to_s(36)
+      break token unless User.exists?(refer_code: token)
     end
   end
 
@@ -593,7 +603,7 @@ class User < ApplicationRecord
   end
 
   def self.user_search_condition(search_for)
-    User.ransack(first_name_or_email_or_phone_start: search_for, sub_skill_title_start: search_for ,skill_title_start: search_for, categories_title_start: search_for, m: 'or').result
+    User.confirmed.ransack(first_name_or_email_or_phone_start: search_for, sub_skill_title_start: search_for ,skill_title_start: search_for, categories_title_start: search_for, m: 'or').result
   end
 
 end
