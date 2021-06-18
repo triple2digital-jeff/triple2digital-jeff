@@ -34,6 +34,8 @@
 #  phone                  :string
 #  profile_img            :string           default("http://app.profilerlife.com/images/user.png")
 #  provider               :string
+#  refer_by               :integer
+#  refer_code             :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string

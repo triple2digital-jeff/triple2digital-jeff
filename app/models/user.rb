@@ -34,6 +34,7 @@
 #  phone                  :string
 #  profile_img            :string           default("http://app.profilerlife.com/images/user.png")
 #  provider               :string
+#  refer_by               :integer
 #  refer_code             :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -504,7 +505,7 @@ class User < ApplicationRecord
 
   def attributes
     {id: self.id, email: self.email, first_name: self.first_name, last_name: self.last_name, created_at: self.created_at,
-     updated_at: self.updated_at, phone: self.phone, gender: self.gender, zipcode: self.zipcode, city: self.city, state: self.state, country: self.country, dob: self.dob, address: self.address, profile_img: self.profile_img, cover_img: self.cover_img, is_skilled: self.is_skilled, latitude: self.latitude, longitude: self.longitude, stripe_token: self.stripe_token, stripe_payout_token: self.stripe_payout_token, api_token: self.api_token, refer_code: self.refer_code}
+     updated_at: self.updated_at, phone: self.phone, gender: self.gender, zipcode: self.zipcode, city: self.city, state: self.state, country: self.country, dob: self.dob, address: self.address, profile_img: self.profile_img, cover_img: self.cover_img, is_skilled: self.is_skilled, latitude: self.latitude, longitude: self.longitude, stripe_token: self.stripe_token, stripe_payout_token: self.stripe_payout_token, api_token: self.api_token, refer_code: self.refer_code, refer_by: self.refer_by}
   end
 
   def has_endorsed(user_id)

@@ -289,7 +289,7 @@ class Api::V1::UsersController < ApplicationController
   end
   # Only allow a trusted parameter “white list” through.
   def user_params
-    params.require(:user).permit(:cover_img, :profile_img, :zipcode, :country, :state, :city, :dob, :first_name, :last_name, :email, :password, :password_confirmation, :phone, :gender, :address, :is_skilled, :age, :latitude, :longitude, :stripe_token, :stripe_payout_token , working_days_attributes: [:work_day, :start_time, :end_time, :opened, :has_break, :break_start_time, :break_end_time])
+    params.require(:user).permit(:cover_img, :refer_by, :profile_img, :zipcode, :country, :state, :city, :dob, :first_name, :last_name, :email, :password, :password_confirmation, :phone, :gender, :address, :is_skilled, :age, :latitude, :longitude, :stripe_token, :stripe_payout_token , working_days_attributes: [:work_day, :start_time, :end_time, :opened, :has_break, :break_start_time, :break_end_time])
   end
 
   def verify_api_token
