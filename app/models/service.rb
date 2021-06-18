@@ -74,6 +74,9 @@ class Service < ApplicationRecord
       end
     end
     all_data[:all_slots] = all_slots
+    user = self.owner
+    already_booked_slots = user.owned_services.joins(:appointments).where("appointments.appointment_date=?", for_date).pluck(:start_time, :end_time)
+    all_data[:already_booked_slots] = already_booked_slots
     all_data
   end
 
