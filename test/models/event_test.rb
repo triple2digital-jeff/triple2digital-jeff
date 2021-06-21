@@ -10,6 +10,7 @@
 #  end_date          :datetime
 #  has_published     :boolean          default(FALSE)
 #  is_enabled        :integer          default(0)
+#  is_free_event     :boolean          default(FALSE)
 #  is_paid           :boolean          default(FALSE)
 #  is_recurring      :boolean          default(FALSE)
 #  is_tax_by_creator :boolean          default(FALSE)

@@ -16,12 +16,14 @@
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  first_name             :string
+#  free_events            :integer          default(0)
 #  gender                 :string
 #  is_book_service        :boolean          default(TRUE), not null
 #  is_cancel_appointment  :boolean          default(TRUE), not null
 #  is_comments            :boolean          default(TRUE), not null
 #  is_endrose             :boolean          default(TRUE), not null
 #  is_event_details       :boolean          default(TRUE), not null
+#  is_extra_event_added   :boolean          default(FALSE)
 #  is_likes               :boolean          default(TRUE), not null
 #  is_service_notes       :boolean          default(TRUE), not null
 #  is_shares              :boolean          default(TRUE), not null
@@ -34,7 +36,7 @@
 #  phone                  :string
 #  profile_img            :string           default("http://app.profilerlife.com/images/user.png")
 #  provider               :string
-#  refer_by               :integer
+#  refer_by               :string
 #  refer_code             :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -50,6 +52,7 @@
 #  updated_at             :datetime         not null
 #  skill_id               :integer
 #  sub_skill_id           :integer
+#  voucher_customer_id    :string
 #
 # Indexes
 #

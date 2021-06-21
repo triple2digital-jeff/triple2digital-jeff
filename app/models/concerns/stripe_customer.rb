@@ -19,7 +19,11 @@ class StripeCustomer
         total = total + (package['price']*package['required_tickets'])
       end
     end
-    if self.event.is_tax_by_creator
+    if self.event.is_free_event
+      actual_amount = total * 100.0
+      total_amount = (total) * 100.0
+      company_share = 0
+    elsif self.event.is_tax_by_creator
       total_amount = (total) * 100.0
       actual_amount = (total - company_share) * 100.0
     else

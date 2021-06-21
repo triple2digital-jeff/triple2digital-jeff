@@ -16,12 +16,14 @@
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  first_name             :string
+#  free_events            :integer          default(0)
 #  gender                 :string
 #  is_book_service        :boolean          default(TRUE), not null
 #  is_cancel_appointment  :boolean          default(TRUE), not null
 #  is_comments            :boolean          default(TRUE), not null
 #  is_endrose             :boolean          default(TRUE), not null
 #  is_event_details       :boolean          default(TRUE), not null
+#  is_extra_event_added   :boolean          default(FALSE)
 #  is_likes               :boolean          default(TRUE), not null
 #  is_service_notes       :boolean          default(TRUE), not null
 #  is_shares              :boolean          default(TRUE), not null
@@ -34,7 +36,7 @@
 #  phone                  :string
 #  profile_img            :string           default("http://app.profilerlife.com/images/user.png")
 #  provider               :string
-#  refer_by               :integer
+#  refer_by               :string
 #  refer_code             :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -50,6 +52,7 @@
 #  updated_at             :datetime         not null
 #  skill_id               :integer
 #  sub_skill_id           :integer
+#  voucher_customer_id    :string
 #
 # Indexes
 #
@@ -139,6 +142,7 @@ class User < ApplicationRecord
   validates :avatar, content_type: {in: ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'], message: 'Please upload a valid image'}
   validates :avatar, size: { less_than: 2.megabytes , message: 'Image size should be less than 2 MB' }
   after_save :create_default_working_days
+  after_create :create_voucher_customer
   validate :validate_dummy_email
   #
   accepts_nested_attributes_for :working_days
@@ -244,6 +248,23 @@ class User < ApplicationRecord
       self.working_days.create(work_day: 5, start_time: '06:00', end_time: '21:00', opened: 'true')
       self.working_days.create(work_day: 6, start_time: '06:00', end_time: '21:00', opened: 'false')
     end
+  end
+
+  def create_voucher_customer
+    if self.refer_by
+      user = User.find_by(refer_code: self.refer_by)
+      unless user.is_extra_event_added
+        if User.where(refer_by: user.refer_code).count >= 5
+          user.update(free_events: user.free_events+3, is_extra_event_added: true) 
+        end
+      end
+    end
+    # unless self.is_extra_event_added
+    #   self.update(free_events: self.free_events+1) 
+    # end
+    # customer = VoucherApiService.new().create_customer(self)
+    # self.voucher_customer_id = customer["id"]
+    # self.save
   end
 
   def pretty_name
@@ -505,7 +526,7 @@ class User < ApplicationRecord
 
   def attributes
     {id: self.id, email: self.email, first_name: self.first_name, last_name: self.last_name, created_at: self.created_at,
-     updated_at: self.updated_at, phone: self.phone, gender: self.gender, zipcode: self.zipcode, city: self.city, state: self.state, country: self.country, dob: self.dob, address: self.address, profile_img: self.profile_img, cover_img: self.cover_img, is_skilled: self.is_skilled, latitude: self.latitude, longitude: self.longitude, stripe_token: self.stripe_token, stripe_payout_token: self.stripe_payout_token, api_token: self.api_token, refer_code: self.refer_code, refer_by: self.refer_by}
+     updated_at: self.updated_at, phone: self.phone, gender: self.gender, zipcode: self.zipcode, city: self.city, state: self.state, country: self.country, dob: self.dob, address: self.address, profile_img: self.profile_img, cover_img: self.cover_img, is_skilled: self.is_skilled, latitude: self.latitude, longitude: self.longitude, stripe_token: self.stripe_token, stripe_payout_token: self.stripe_payout_token, api_token: self.api_token, refer_code: self.refer_code, refer_by: self.refer_by, free_events: self.free_events}
   end
 
   def has_endorsed(user_id)
