@@ -29,6 +29,7 @@ Rails.application.routes.draw do
           get :notifications
           put :update_notification
           get :fetch_notifications
+          get :vouchers
         end
         collection do
           put :forgot_password
@@ -101,6 +102,7 @@ Rails.application.routes.draw do
   end
 
   resources :users
+  resources :offers
   resources :home do
     collection do
       get :user_after_confirmation

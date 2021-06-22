@@ -27,6 +27,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  owner_id          :integer
+#  refers_id         :text             default([]), is an Array
 #
 
 require 'test_helper'

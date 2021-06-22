@@ -88,6 +88,7 @@ class User < ApplicationRecord
   has_many :report_posts, dependent: :destroy
   has_many :visits, dependent: :destroy
   has_many :visitors, through: :visits
+  has_many :vouchers, dependent: :destroy
 
   has_many :user_connections
   has_many :notifications, dependent: :destroy
@@ -259,12 +260,9 @@ class User < ApplicationRecord
         end
       end
     end
-    # unless self.is_extra_event_added
-    #   self.update(free_events: self.free_events+1) 
-    # end
-    # customer = VoucherApiService.new().create_customer(self)
-    # self.voucher_customer_id = customer["id"]
-    # self.save
+    customer = VoucherApiService.new().create_customer(self)
+    self.voucher_customer_id = customer["id"]
+    self.save
   end
 
   def pretty_name

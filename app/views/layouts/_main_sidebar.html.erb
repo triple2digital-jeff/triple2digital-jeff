@@ -48,6 +48,15 @@
       <% end %>
     </li>
 
+    <li class="<%= is_current_navigation_sidebar?('offers') %>">
+      <%= link_to offers_path do %>
+          <i class="fa fa-university"></i><span>Offers</span>
+          <span class="pull-right-container">
+              <small class="label pull-right bg-blue"><%= Offer.count %></small>
+            </span>
+      <% end %>
+    </li>
+
   </ul>
   <ul class="sidebar-menu" data-widget="tree">
     <li class="header"></li>

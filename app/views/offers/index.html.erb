@@ -1,0 +1,24 @@
+<div class="home-main-content">
+  <div class="box">
+    <div class="box-header text-center">
+      <h2 class="box-title m-10">LIST OF OFFERS</h2>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+      <table id="dttb" class="table table-bordered table-hover">
+        <thead>
+        </tr>
+        <tr>
+          <th>#</th>
+          <th>USER TYPE</th>
+          <th>Description</th>
+          <th>Discount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%= render partial: :offer, collection: @offers %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

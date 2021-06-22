@@ -263,6 +263,14 @@ class Api::V1::UsersController < ApplicationController
         
   end
 
+  def vouchers
+    if current_user.is_skilled
+      @vouchers = current_user.vouchers.where(role: 'PROFILER')
+    else
+      @vouchers = current_user.vouchers.where(role: 'GUEST')
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_user

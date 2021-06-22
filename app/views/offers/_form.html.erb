@@ -1,0 +1,51 @@
+<%= form_with(model: @offer, local: true, class: 'form-horizontal user') do |f| %>
+    <% if @offer.errors.any? %>
+        <div id="error_expl" class="panel panel-danger">
+          <div class="panel-heading">
+            <h3 class="panel-title"><%= pluralize(@offer.errors.count, "error") %> prohibited this offer from being saved:</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <% @offer.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+    <% end %>
+    <div class="box-body">
+      <div class="col-md-6 col-xs-offset-2">
+
+        <div class="form-group">
+          <%= f.label :user_type, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <p><%= @offer.user_type %></p>
+          </div>
+          <!--<span class="help-block"><%#=f.error_span(:first_name) %></span>-->
+        </div>
+
+        <div class="form-group">
+          <%= f.label :description, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <p><%= @offer.description %></p>
+          </div>
+          <!--<span class="help-block"><%#=f.error_span(:first_name) %></span>-->
+        </div>
+        <div class="form-group">
+          <%= f.label :percentage, :class => 'col-sm-3 control-label' %>
+          <div class="col-sm-9">
+            <%= f.text_field :percentage, class: 'form-control' %>
+          </div>
+          <!--<span class="help-block"><%#=f.error_span(:first_name) %></span>-->
+        </div>
+      </div>
+    </div>
+
+    <div class=" box-footer">
+      <div class="col-md-6 col-xs-offset-2 pull-right">
+        <%= f.submit nil, :class => 'btn btn-info' %>
+        <%= link_to t('.cancel', :default => t("helpers.links.cancel")), offers_path, :class => 'btn btn-default' %>
+      </div>
+    </div>
+
+<% end %>
