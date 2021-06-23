@@ -254,10 +254,13 @@ class User < ApplicationRecord
   def create_voucher_customer
     if self.refer_by
       user = User.find_by(refer_code: self.refer_by)
-      unless user.is_extra_event_added
-        if User.where(refer_by: user.refer_code).count >= 5
-          user.update(free_events: user.free_events+3, is_extra_event_added: true) 
+      if user.is_skilled
+        unless user.is_extra_event_added
+          if User.where(refer_by: user.refer_code).count >= 5
+            user.update(free_events: user.free_events+3, is_extra_event_added: true) 
+          end
         end
+      else
       end
     end
     customer = VoucherApiService.new().create_customer(self)

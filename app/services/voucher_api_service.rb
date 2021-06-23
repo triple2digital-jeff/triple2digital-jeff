@@ -27,11 +27,11 @@ class VoucherApiService
     @voucherify.customers.create(customer)
   end
 
-  def create_voucher(user, user_type)
-    if (user_type == 'PROFILER')
-      offer = Offer.find_by(user_type: 'PROFILER')
+  def create_voucher(user, user_type, reason)
+    offer = Offer.find_by(user_type: user_type, reason: reason)
+    if offer
       options = {
-        :category => "Buy A Ticket Via referral",
+        :category => reason,
         :type => 'DISCOUNT_VOUCHER',
         :discount => {
             :type => 'PERCENT',
@@ -42,7 +42,8 @@ class VoucherApiService
         }
       }
       response = @voucherify.vouchers.create(generate_code, options)
-      user.vouchers.create(voucher_id: response["id"], code: response["code"], vc_type: response["type"], category: response["category"], discount: offer.percentage, refer_code: user.refer_code, active: response["active"], redeemed_quantity: response["redemption"]["redeemed_quantity"], redemption: response["redemption"]["quantity"], role: 'PROFILER')
+      user.vouchers.create(voucher_id: response["id"], code: response["code"], vc_type: response["type"], category: response["category"], discount: offer.percentage, refer_code: user.refer_code, active: response["active"], redeemed_quantity: response["redemption"]["redeemed_quantity"], redemption: response["redemption"]["quantity"], role: user_type, reason: reason)
+    
     end
   end
 

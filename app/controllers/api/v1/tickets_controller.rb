@@ -27,7 +27,7 @@ class Api::V1::TicketsController < ApplicationController
         user = User.find_by(refer_code: params[:refer_code])
         if user.is_skilled
           @event.update(refers_id: @event.refers_id.push(params[:refer_code]))
-          VoucherApiService.new().create_voucher(user, 'PROFILER')
+          VoucherApiService.new().create_voucher(user, 'PROFILER', Voucher::TYPES[0])
         end
       end
       EventMailer.event_registration(@user, registration[0], registration[1], @event, registration[2], registration[3], false).deliver

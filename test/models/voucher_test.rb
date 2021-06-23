@@ -7,6 +7,7 @@
 #  category          :string
 #  code              :string
 #  discount          :integer
+#  reason            :text
 #  redeemed_quantity :integer
 #  redemption        :integer
 #  refer_code        :string
