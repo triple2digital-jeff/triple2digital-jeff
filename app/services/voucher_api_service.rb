@@ -1,15 +1,10 @@
 class VoucherApiService
   def initialize
     @voucherify = Voucherify::Client.new({
-      :applicationId => 'c407c6b2-8513-4dd1-bd71-b7f3b6b996ea',
-      :clientSecretKey => '3ad3e662-303a-4915-979c-993472cb4de7',
-      :apiUrl => 'https://us1.api.voucherify.io'
+      :applicationId => Rails.application.secrets.voucherify_id,
+      :clientSecretKey => Rails.application.secrets.voucherify_secret,
+      :apiUrl => Rails.application.secrets.voucherify_url
     })
-    # @voucherify = Voucherify::Client.new({
-    #   :applicationId => Rails.application.secrets.voucherify_id,
-    #   :clientSecretKey => Rails.application.secrets.voucherify_secret,
-    #   :apiUrl => Rails.application.secrets.voucherify_url
-    # })
   end
 
   def create_customer(user)
