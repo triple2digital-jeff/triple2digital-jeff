@@ -93,6 +93,7 @@ class Event < ApplicationRecord
         total_tickets: self.total_tickets,
         is_tax_by_creator: self.is_tax_by_creator,
         available_tickets: self.available_tickets,
+        is_free_event: self.is_free_event,
         owner: owner
     }
 
