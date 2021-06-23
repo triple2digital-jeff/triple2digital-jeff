@@ -130,7 +130,7 @@ class Api::V1::UsersController < ApplicationController
         @user.update(skill_id: params[:skill_id].to_i)
         @user.update(sub_skill_id: params[:sub_skill_id].to_i)
       end
-      @user.update(is_skilled: params[:is_skilled])
+      @user.update(is_skilled: params[:is_skilled], free_events: 2)
       render json: @user, include: [:skill, :sub_skill], status: :ok
     rescue
       render :json => {:error => "Unable to update user skills at this time."}, :status => :unprocessable_entity
