@@ -23,13 +23,13 @@ class Api::V1::TicketsController < ApplicationController
     if(ticket_params[:ticket_attributes].present?)
       render json: {error: @json}, status: :unprocessable_entity and return unless validate_data
       registration = Event.register_for_event(ticket_params[:ticket_attributes], ticket_params[:buyer_id], @event)
-      # if (params[:refer_code].present? && !@event.refers_id.include? params[:refer_code])
-      #   user = User.find_by(refer_code: params[:refer_code])
-      #   if user.is_skilled
-      #     @event.update(refers_id: @event.refers_id.push(params[:refer_code]))
-      #     VoucherApiService.new().create_voucher(user, 'PROFILER')
-      #   end
-      # end
+      if (params[:refer_code].present? && (!@event.refers_id.include? params[:refer_code]))
+        user = User.find_by(refer_code: params[:refer_code])
+        if user.is_skilled
+          @event.update(refers_id: @event.refers_id.push(params[:refer_code]))
+          VoucherApiService.new().create_voucher(user, 'PROFILER')
+        end
+      end
       EventMailer.event_registration(@user, registration[0], registration[1], @event, registration[2], registration[3], false).deliver
       nuser = @event.owner
       if nuser.is_tickets_sold
