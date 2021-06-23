@@ -26,6 +26,9 @@ class Api::V1::EventsController < ApplicationController
     @event.end_date = params[:event][:end_date].gsub("  ", " +")
     
     if @event.save
+      if @event.is_free_event
+        user = @event.owner.update(free_events: @event.owner.free_events-1)
+      end
       # tokens =  UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:push_token)
       # ids = UserDevice.joins(:user).active.where.not("users.is_upcoming_events = ?", "false").pluck(:user_id)
       # if tokens.present?
