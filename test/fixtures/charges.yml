@@ -11,6 +11,8 @@
 #  refunded        :boolean          default(FALSE)
 #  stripe_response :text
 #  total_amount    :float
+#  vc_amount       :float
+#  vc_code         :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  event_id        :integer

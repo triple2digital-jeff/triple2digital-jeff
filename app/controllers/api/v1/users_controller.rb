@@ -271,6 +271,13 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def verify_voucher
+    @voucher = current_user.vouchers.find_by(code: params[:voucher_code])
+    unless @voucher
+      render :json => {:error => "Voucher is not found"}
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_user

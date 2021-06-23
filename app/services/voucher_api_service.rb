@@ -47,6 +47,18 @@ class VoucherApiService
     end
   end
 
+  def redeem_voucher(voucher)
+    user = voucher.user
+    options = {
+      "customer": {
+          "source_id": user.voucher_customer_id,
+          "name": user.fullname,
+          "email": user.email
+        }
+    }
+    @voucherify.redemptions.redeem(voucher.code, options)
+  end
+
   private
 
   def generate_code

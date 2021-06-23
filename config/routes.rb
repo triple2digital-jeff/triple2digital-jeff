@@ -30,6 +30,7 @@ Rails.application.routes.draw do
           put :update_notification
           get :fetch_notifications
           get :vouchers
+          get :verify_voucher
         end
         collection do
           put :forgot_password

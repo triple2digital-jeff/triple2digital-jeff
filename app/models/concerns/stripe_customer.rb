@@ -12,11 +12,21 @@ class StripeCustomer
     success = true
     total = 0
     company_share = 0
+    vc_amount = 0
     params['event']['ticket_packages'].each do |package|
       if package['required_tickets'].present?
         single_fee = (package['price'] * 1.25 / 100.0) + 0.60
         company_share = company_share + single_fee*package['required_tickets']
         total = total + (package['price']*package['required_tickets'])
+      end
+    end
+    if params['event']['voucher_code'].present?
+      voucher = Voucher.find_by(code: params['event']['voucher_code'])
+      if voucher.present? && voucher.active
+        vc_amount = (total*voucher.discount)/100
+        total = total - vc_amount
+        voucher.update(active: false)
+        VoucherApiService.new().redeem_voucher(voucher)
       end
     end
     if self.event.is_free_event
@@ -50,7 +60,9 @@ class StripeCustomer
           user_id: self.user.id,
           owner_id: self.owner.id,
           event_id: self.event.id,
-          stripe_response: stripe_charge
+          stripe_response: stripe_charge,
+          vc_code: params['event']['voucher_code'],
+          vc_amount: vc_amount
       )
     rescue Stripe::StripeError => e
       success = false
