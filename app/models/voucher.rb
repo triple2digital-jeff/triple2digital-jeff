@@ -6,6 +6,7 @@
 #  active            :boolean
 #  category          :string
 #  code              :string
+#  description       :text
 #  discount          :integer
 #  reason            :text
 #  redeemed_quantity :integer
@@ -23,4 +24,5 @@ class Voucher < ApplicationRecord
   belongs_to :user
 
   TYPES = ['Buy A Ticket Via Referral Code', 'Guest Sign Up Discount', 'Guest Refer App']
+  
 end

@@ -41,8 +41,13 @@ class VoucherApiService
           "quantity": 1 
         }
       }
+      if reason == "Guest Refer App"
+        description = "Get 10% discount on your first ticket purchase"
+      else
+        description = "Get 10% discount on your first ticket purchase"
+      end
       response = @voucherify.vouchers.create(generate_code, options)
-      user.vouchers.create(voucher_id: response["id"], code: response["code"], vc_type: response["type"], category: response["category"], discount: offer.percentage, refer_code: user.refer_code, active: response["active"], redeemed_quantity: response["redemption"]["redeemed_quantity"], redemption: response["redemption"]["quantity"], role: user_type, reason: reason)
+      user.vouchers.create(voucher_id: response["id"], code: response["code"], vc_type: response["type"], category: response["category"], discount: offer.percentage, refer_code: user.refer_code, active: response["active"], redeemed_quantity: response["redemption"]["redeemed_quantity"], redemption: response["redemption"]["quantity"], role: user_type, reason: reason, description: description)
     
     end
   end
