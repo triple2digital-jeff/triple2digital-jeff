@@ -6,4 +6,5 @@ json.array!(@vouchers) do |voucher|
   json.category voucher.category
   json.discount voucher.discount
   json.active voucher.active
+  json.description voucher.description
 end
