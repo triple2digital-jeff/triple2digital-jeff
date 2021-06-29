@@ -6,6 +6,7 @@
 #  active            :boolean
 #  category          :string
 #  code              :string
+#  description       :text
 #  discount          :integer
 #  reason            :text
 #  redeemed_quantity :integer
