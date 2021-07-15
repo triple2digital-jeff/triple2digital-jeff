@@ -17,7 +17,7 @@ json.array!(@notifications) do |notify|
     user = User.find_by(id: notify.notifier_id)
     json.profile_url user.present? ? user.profile_img : nil
     json.is_endorsed user.endorsements.where(endorsed_by_id: notify.user_id).first.present?
-  elsif (notify.notification_type == "appointment") && Appointment.find_by(id: notify.object_id)
+  elsif (notify.notification_type == "appointment") && Appointment.find_by(id: notify.object_id).present?
     json.event_type notify.notification_type
     appointment = Appointment.find_by(id: notify.object_id)
     json.object_id appointment.service_id
