@@ -22,15 +22,15 @@
 #  is_cancel_appointment   :boolean          default(TRUE), not null
 #  is_comments             :boolean          default(TRUE), not null
 #  is_endrose              :boolean          default(TRUE), not null
-#  is_event_details        :boolean          default(TRUE), not null
+#  is_event_details        :boolean          default(FALSE), not null
 #  is_extra_event_added    :boolean          default(FALSE)
 #  is_guest_refer_vc_added :boolean          default(FALSE)
 #  is_likes                :boolean          default(TRUE), not null
 #  is_service_notes        :boolean          default(TRUE), not null
 #  is_shares               :boolean          default(TRUE), not null
 #  is_skilled              :boolean          default(FALSE)
-#  is_tickets_sold         :boolean          default(TRUE), not null
-#  is_upcoming_events      :boolean          default(TRUE), not null
+#  is_tickets_sold         :boolean          default(FALSE), not null
+#  is_upcoming_events      :boolean          default(FALSE), not null
 #  last_name               :string
 #  latitude                :float
 #  longitude               :float
