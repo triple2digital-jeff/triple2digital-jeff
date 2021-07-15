@@ -11,7 +11,7 @@ json.array!(@notifications) do |notify|
     else
       json.is_endorsed nil
     end
-  elsif notify.notification_type == "unendorsement"
+  elsif (notify.notification_type == "unendorsement") && User.find_by(id: notify.notifier_id).present?
     json.event_type notify.notification_type
     json.object_id notify.notifier_id
     user = User.find_by(id: notify.notifier_id)
