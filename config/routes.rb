@@ -119,6 +119,7 @@ Rails.application.routes.draw do
   resources :events do
     collection do
       get :register
+      get :preview
     end
   end
   resources :appointments

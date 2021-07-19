@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:register]
+  before_action :authenticate_user!, except: [:register, :preview]
 
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :register]
-  layout 'home', except: [:register]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :register, :preview]
+  layout 'home', except: [:register, :preview]
   # GET /events
   # GET /events.json
   def index
@@ -71,6 +71,9 @@ class EventsController < ApplicationController
 
   def register
 
+  end
+
+  def preview
   end
 
   private
