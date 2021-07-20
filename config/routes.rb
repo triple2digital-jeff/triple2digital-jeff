@@ -123,7 +123,11 @@ Rails.application.routes.draw do
     end
   end
   resources :appointments
-  resources :services
+  resources :services do
+    collection do
+      get :preview
+    end
+  end
   resources :payments
   resources :outgoing_payments
   resources :charges do

@@ -1,0 +1,51 @@
+<div class="invoice" style="border: 10px solid #f4f4f4">
+
+  <div class="invoice">
+    <div class="box box-info">
+      <div class="box-header with-border text-center">
+        <h3 class="box-title">Service Details</h3>
+      </div>
+      <div class='form-horizontal event'>
+        <div class="row">
+          <div class="col-md-4">
+            <%= image_tag(@service.cover_image, style: "width: 100%") %>
+          </div>
+          <div class="col-md-8">
+            <div class="table-responsive" style="margin-top: 20px;">
+              <table class="table">
+                <tbody>
+                <tr>
+                  <th style="width:25%">Title:</th>
+                  <td><%= @service.title %></td>
+                  <th>Description:</th>
+                  <td><%= @service.note %></td>
+                </tr>
+                <tr>
+                  <th>Organizer:</th>
+                  <td><%= @service.owner&.fullname %></td>
+                </tr>
+                </tbody>
+              </table>
+              <div id="app_links" style="margin-top: 10%; text-align: center">
+                <div style="font-size: 22px; padding: 21px">You can install mobile app using following links.</div>
+                <span>
+                  <%= link_to "https://itunes.apple.com/us/app/profiler-life/id1251573847?mt=8" do %>
+                   <%= image_tag('apple.png')%>
+                  <% end %>
+                </span>
+
+                <span>
+                  <%= link_to "https://play.google.com/store/apps/details?id=com.profilerlife.profiler" do %>
+                      <%= image_tag('g.png')%>
+                  <% end %>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

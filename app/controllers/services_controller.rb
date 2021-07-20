@@ -1,9 +1,9 @@
 class ServicesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:preview]
 
 
-  before_action :set_service, only: [:show, :edit, :update, :destroy]
-  layout 'home'
+  before_action :set_service, only: [:show, :edit, :update, :destroy, :preview]
+  layout 'home', except: [:preview]
   # GET /services
   # GET /services.json
   def index
@@ -38,6 +38,9 @@ class ServicesController < ApplicationController
 
   # GET /services/1/edit
   def edit
+  end
+
+  def preview
   end
 
   # POST /services
@@ -83,7 +86,7 @@ class ServicesController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_service
-    @service = Service.find(params[:id])
+    @service = Service.find(params[:id] || params[:service_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
