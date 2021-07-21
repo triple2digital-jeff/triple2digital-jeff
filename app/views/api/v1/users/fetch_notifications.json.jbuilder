@@ -21,11 +21,11 @@ json.array!(@notifications) do |notify|
     json.event_type notify.notification_type
     appointment = Appointment.find_by(id: notify.object_id)
     json.object_id appointment.service_id
-  elsif notify.notification_type == "appointment_update"
+  elsif (notify.notification_type == "appointment_update") && Appointment.find_by(id: notify.object_id).present?
     json.event_type notify.notification_type
     appointment = Appointment.find_by(id: notify.object_id)
     json.object_id appointment.service_id
-  elsif notify.notification_type == "appointment_cancel"
+  elsif (notify.notification_type == "appointment_cancel") && Appointment.find_by(id: notify.object_id).present?
     json.event_type notify.notification_type
     appointment = Appointment.find_by(id: notify.object_id)
     json.object_id appointment.service_id
