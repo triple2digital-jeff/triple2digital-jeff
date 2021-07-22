@@ -127,7 +127,7 @@
               <div class="row">
                 <div class="col-md-12 stipe_box">
                   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                          data-key="pk_live_axDgWIBsPVsNhOPRWLlIMTXf"
+                          data-key="<%= Rails.application.secrets.strip_live_key %>"
                           data-description= "<%=@event.title %> Payment"
                           data-amount="0"
                           data-label="Pay and Register"
