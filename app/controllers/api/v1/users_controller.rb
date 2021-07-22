@@ -48,6 +48,10 @@ class Api::V1::UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
+    if params[:user][:profile_img].present? && User.find_by_profile_img(params[:user][:profile_img]).present?
+      params[:user].delete :profile_img
+    end
+    
     if @user.update(user_params)
       render json: @user, include: [:endorsements, :skill, :sub_skill]
     else
