@@ -8,7 +8,11 @@
       <div class='form-horizontal event'>
         <div class="row">
           <div class="col-md-4">
-            <%= image_tag(@service.cover_image, style: "width: 100%") %>
+            <% if @service.video_url.present? %>
+              <%= video_tag @service.video_url, :size => "320x240", :controls => true %>
+            <%else%>
+              <%= image_tag(@service.cover_image, style: "width: 100%") %>
+            <%end%>
           </div>
           <div class="col-md-8">
             <div class="table-responsive" style="margin-top: 20px;">
