@@ -13,7 +13,7 @@ class Category < ApplicationRecord
 
   ############ Associations ##############
   has_and_belongs_to_many :users
-  has_many :skills, dependent: :destroy
+  has_many :skills, -> { order('title ASC') }, dependent: :destroy
 
   ############ Validations ##############
 
