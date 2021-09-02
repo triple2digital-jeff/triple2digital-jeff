@@ -17,7 +17,7 @@
 class Skill < ApplicationRecord
 
   belongs_to :category
-  has_many :sub_skills, dependent: :destroy
+  has_many :sub_skills, -> { order('title ASC') }, dependent: :destroy
   has_many :users
   ############ Validations ##############
 

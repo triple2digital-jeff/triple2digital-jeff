@@ -118,7 +118,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def get_skilled_data
-    @categories = Category.all
+    @categories = Category.all.order('title ASC')
     render json: @categories, include: {skills: {include: :sub_skills}}, status: :ok
     # include: {info_blocks:{}, cards: {include: :info_blocks}}
   end
