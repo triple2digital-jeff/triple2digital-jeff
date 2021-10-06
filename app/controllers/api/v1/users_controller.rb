@@ -34,7 +34,6 @@ class Api::V1::UsersController < ApplicationController
   def create
     unless @user
       @user = User.new(user_params)
-      # debugger
     end
     pass = params[:user][:password]
     @user.password=@user.password_confirmation=pass
@@ -47,11 +46,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   # PATCH/PUT /users/1
-  def update
-    if params[:user][:profile_img].present? && User.find_by_profile_img(params[:user][:profile_img]).present?
-      params[:user].delete :profile_img
-    end
-    
+  def update    
     if @user.update(user_params)
       render json: @user, include: [:endorsements, :skill, :sub_skill]
     else
@@ -308,6 +303,9 @@ class Api::V1::UsersController < ApplicationController
   end
   # Only allow a trusted parameter “white list” through.
   def user_params
+    if params[:user][:profile_img].present? && User.find_by_profile_img(params[:user][:profile_img]).present?
+      params[:user].delete :profile_img
+    end
     params.require(:user).permit(:cover_img, :refer_by, :profile_img, :zipcode, :country, :state, :city, :dob, :first_name, :last_name, :email, :password, :password_confirmation, :phone, :gender, :address, :is_skilled, :age, :latitude, :longitude, :stripe_token, :stripe_payout_token , working_days_attributes: [:work_day, :start_time, :end_time, :opened, :has_break, :break_start_time, :break_end_time])
   end
 

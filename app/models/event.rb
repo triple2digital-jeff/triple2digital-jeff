@@ -108,7 +108,7 @@ class Event < ApplicationRecord
   end
 
   def self.search(options = {})
-    events = Event.all
+    events = Event.all.published
     events = events.near([options[:latitude].to_f, options[:longitude].to_f], options[:distance] || 5, units: :km) if options[:latitude].present? && options[:longitude].present?
     events = events.where("price >= ?", options[:min_price]) if options[:min_price].present?
     events = events.where("price <= ?", options[:max_price]) if options[:max_price].present?

@@ -86,7 +86,7 @@ class Api::V1::PostsController < ApplicationController
         @post.post_likes.where(liked_by: @user).first_or_create
         msg= 'liked'
         nuser = @post.user
-        if nuser.is_likes
+        if nuser.is_likes && nuser != @user
           token = nuser.user_devices.active.pluck(:push_token)
           FcmPush.new.send_push_notification('',"#{@user.first_name} liked your post",token) if token.present?
           nuser.notifications.create(notification_type: 'like_post', description: "#{@user.first_name} liked your post", notifier_id: nuser.try(:id), object_id: @post.id)
