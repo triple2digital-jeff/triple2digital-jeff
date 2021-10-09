@@ -75,7 +75,7 @@ class StripeCustomer
     success = true
     begin
       payment = Stripe::PaymentIntent.create({
-                                                 payment_method: 'pm_card_visa',
+                                                 payment_method: 'card',
                                                  amount: (self.amount * 100.0).to_i,
                                                  currency: 'usd',
                                                  transfer_data: {
