@@ -75,7 +75,7 @@ class StripeCustomer
     success = true
     begin
       payment = Stripe::Transfer.create({
-                                                  amount: (self.amount * 100.0).to_i,
+                                                  amount: (self.amount).to_i,
                                                   currency: 'usd',
                                                   destination: self.user.stripe_payout_token,
                                                   transfer_group: 'EVENT_RETURNS'
