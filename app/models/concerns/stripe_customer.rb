@@ -74,14 +74,11 @@ class StripeCustomer
   def transfer
     success = true
     begin
-      payment = Stripe::PaymentIntent.create({
-                                                 payment_method: 'card',
-                                                 amount: (self.amount * 100.0).to_i,
-                                                 currency: 'usd',
-                                                 transfer_data: {
-                                                     destination: self.user.stripe_payout_token,
-                                                 },
-                                                 confirm: true
+      payment = Stripe::Transfer.create({
+                                                  amount: (self.amount * 100.0).to_i,
+                                                  currency: 'usd',
+                                                  destination: self.user.stripe_payout_token,
+                                                  transfer_group: 'EVENT_RETURNS'
                                              })
       Payment.create!(
                  amount: self.amount * 100.0,
