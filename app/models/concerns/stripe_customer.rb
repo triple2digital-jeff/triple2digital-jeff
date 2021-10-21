@@ -79,7 +79,7 @@ class StripeCustomer
                                                   currency: 'usd',
                                                   destination: self.user.stripe_payout_token,
                                                   transfer_group: 'EVENT_RETURNS',
-                                                  source_type: 'bank_account'
+                                                  source_type: 'card'
                                              })
       Payment.create!(
                  amount: self.amount * 100.0,
