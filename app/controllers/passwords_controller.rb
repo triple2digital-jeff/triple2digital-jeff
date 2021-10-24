@@ -31,6 +31,10 @@ class PasswordsController < Devise::PasswordsController
   protected
 
   def after_resetting_password_path_for(resource)
-    new_session_path(resource, :gst=>true)
+    if resource.role?
+      new_session_path(resource, :gst=>true)
+    else
+      new_session_path(resource, :gst=>true, app_user: true)
+    end
   end
 end

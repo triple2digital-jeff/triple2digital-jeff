@@ -29,7 +29,7 @@
 #  is_service_notes        :boolean          default(TRUE), not null
 #  is_shares               :boolean          default(TRUE), not null
 #  is_skilled              :boolean          default(FALSE)
-#  is_tickets_sold         :boolean          default(FALSE), not null
+#  is_tickets_sold         :boolean          default(TRUE), not null
 #  is_upcoming_events      :boolean          default(FALSE), not null
 #  last_name               :string
 #  latitude                :float
