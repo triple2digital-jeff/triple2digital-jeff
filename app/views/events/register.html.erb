@@ -46,10 +46,98 @@
   </div>
 
   <%# if @event.is_paid? %>
-    
+    <div class="invoice">
+
+      <div class="box box-info" style="min-height: 55%">
+        <div class="box-header with-border text-center">
+          <h3 class="box-title">Select Tickets</h3>
+        </div>
+        <div class="box-body">
+          <div class="form-group">
+            <label class='col-sm-4 control-label'>Ticket Type</label>
+            <label class='col-sm-4 control-label'>Ticket Price</label>
+            <label class='col-sm-4 control-label'>Select Tickets</label>
+          </div>
+          <% @event.ticket_packages.each do |pkg| %>
+            <div class="form-group">
+              <div class="col-sm-4">
+                <div class='form-control'><%= pkg.ticket_type %></div>
+              </div>
+              <div class="col-sm-4">
+                <div class='form-control price'>$<%= sprintf("%.2f", pkg.price) %></div>
+              </div>
+
+              <div class="col-sm-4" style="margin-bottom: 10px">
+                  <%= select_tag :ticket_count, options_for_select((1..15).to_a),:prompt => 'Tickets', class:'form-control fieldBg', "data-stripe"=>"exp-year", "data-package_id"=> pkg.id %>
+              </div>
+            </div>
+          <% end %>
+          <div class="form-group">
+          <label class='col-sm-4 control-label text-right'>Total Price</label>
+          <div class="col-sm-4">
+            <div class='form-control total_price'>$0.00</div>
+          </div>
+          <div class="col-sm-4 text-center">
+            <!--<button type="button" class="btn btn-primary reset" style="width: 100%">Reset Price</button>-->
+          </div>
+        </div>
+        </div>
+
+      </div>
+      <div id="error_box" class="alert alert-danger text-center"></div>
+    </div>
   <%# end %>
 
-  
+  <div class="invoice">
+    <div class="box box-info">
+      <div class="box-header with-border text-center">
+        <h3 class="box-title">Required User Details</h3>
+      </div>
+      <div class="box-body">
+        <%= form_tag charge_new_user_for_event_charges_path, id: "ticket_purchase_form" do %>
+            <% if flash[:error].present? %>
+                <div id="error_explanation">
+                  <p><%= flash[:error] %></p>
+                </div>
+            <% end %>
+            <%=hidden_field_tag :stripeToken %>
+            <%=hidden_field_tag :event_id, @event.id %>
+            <%=hidden_field_tag :amount %>
+            <%=hidden_field_tag "ticket_attributes[]" %>
+
+            <div class="col-md-12 user-details-section">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-3">
+                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First name" required="true">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" required="true">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Email" required="true">
+                  </div>
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" name="phone" id="phone"  placeholder="Phone Number" required="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group text-center free-section-btn">
+                <button type="button" class="btn btn-primary text-center" id="purchase_tickets">Register For Event</button>
+              </div>
+            </div>
+            <div class="form-group text-center stripe-section-btn">
+              <div class="row">
+                <div class="col-md-12 stipe_box">
+                  <%= link_to "Pay and Register", "https://profilerlife.page.link/oN6u" %><br />
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+      </div>
+    </div>
+  </div>
 </div>
 <script>
   $(function() {
