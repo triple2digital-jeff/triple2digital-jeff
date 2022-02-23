@@ -129,7 +129,12 @@
             <div class="form-group text-center stripe-section-btn">
               <div class="row">
                 <div class="col-md-12 stipe_box">
-                  <%= link_to "Pay and Register", "https://profilerlife.page.link/oN6u" %><br />
+                  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                          data-description= "<%=@event.title %> Payment"
+                          data-amount="0"
+                          data-key="<%= Rails.application.secrets.strip_live_key %>"
+                          data-label="Pay and Register"
+                          data-locale="auto"></script>
                 </div>
               </div>
             </div>

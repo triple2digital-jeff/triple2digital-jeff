@@ -92,10 +92,13 @@ class ChargesController < ApplicationController
 
 
   def create_temp_user(params)
-    user = User.find_by(email: params[:email])
+    email = params[:email].present? ? params[:email] : params[:stripeEmail]
+    first_name = params[:first_name].present? ? params[:first_name] : "Anonymous"
+    last_name = params[:last_name].present? ? params[:last_name] : "User"
+    user = User.find_by(email: email)
     new_user = false
     unless user.present?
-      user = User.new(first_name: params[:first_name], last_name: params[:last_name], email: params[:email], phone: params[:phone])
+      user = User.new(first_name: first_name, last_name: last_name, email: email, phone: params[:phone])
       user.password = user.password_confirmation = "pr3uis84"
       user.skip_confirmation!
       user.save
