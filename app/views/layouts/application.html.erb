@@ -17,7 +17,7 @@
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
   <script type="text/javascript">
-    Stripe.setPublishableKey('sk_live_W1ARbv0V2kALd1hH5n6QgwOU');
+    Stripe.setPublishableKey("<%= Rails.application.secrets.strip_live_key %>");
   </script>
 </head>
 <body>
