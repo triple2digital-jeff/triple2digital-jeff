@@ -59,7 +59,11 @@ class ChargesController < ApplicationController
     message = user.errors.present? ? user.errors.messages : nil
     if user.try(:id).present? && registration[0].present? && params[:amount].to_i > 0
       StripeCustomer.create_customer(params[:email], params[:stripeToken], user) if user.present?
-      response = StripeCustomer.new(user, params[:amount], event).charge
+      pars = params[:ticket_packages].map {|obj| YAML.load(obj)}
+      new_params, event_params = {}, {}
+      new_params['ticket_packages'] = pars[0]
+      event_params['event'] = new_params
+      response = StripeCustomer.new(user, params[:amount], event, event_params).web_charge
       unless response
       # remove all registered tickets
        registration[3].update_all(:owner_id=>nil)
@@ -87,7 +91,12 @@ class ChargesController < ApplicationController
 
 
   def validate_tickets_count
-    render json: {error: @json}, status: :unprocessable_entity and return unless validate_data
+    event = Event.find(params[:event_id])
+    unless validate_data
+      render json: {error: @json}, status: :unprocessable_entity and return unless validate_data
+    else
+      render json: {is_free_event: event.is_free_event?, is_tax_by_creator: event.is_tax_by_creator}
+    end
   end
 
 

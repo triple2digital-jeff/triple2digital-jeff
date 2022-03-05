@@ -71,6 +71,53 @@ class StripeCustomer
     success
   end
 
+  def web_charge
+    success = true
+    total = 0
+    company_share = 0
+    vc_amount = 0
+    params['event']['ticket_packages'].each do |package|
+      if package['required_tickets'].present?
+        single_fee = (package['price'] * 1.25 / 100.0) + 0.60
+        company_share = company_share + single_fee*package['required_tickets']
+        total = total + (package['price']*package['required_tickets'])
+      end
+    end
+    if self.event.is_free_event
+      actual_amount = total * 100.0
+      total_amount = (total) * 100.0
+      company_share = 0
+    elsif self.event.is_tax_by_creator
+      total_amount = (total) * 100.0
+      actual_amount = (total - company_share) * 100.0
+    else
+      #total = total * 100.0
+      total_amount = (total + company_share) * 100.0
+      actual_amount = total * 100.0
+    end
+
+    begin
+      puts "test #{total_amount}"
+
+      Charge.create!(
+          total_amount: total_amount,
+          amount: actual_amount,
+          stripe_id: nil,
+          company_share: company_share * 100.0,
+          user_id: self.user.id,
+          owner_id: self.owner.id,
+          event_id: self.event.id,
+          stripe_response: 'web_checkout',
+          vc_code: params['event']['voucher_code'],
+          vc_amount: vc_amount
+      )
+    rescue Stripe::StripeError => e
+      success = false
+      self.errors = e.error.message if e.error.present?
+    end
+    success
+  end
+
   def transfer
     success = true
     begin

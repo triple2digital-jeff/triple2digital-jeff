@@ -59,7 +59,7 @@
             <label class='col-sm-4 control-label'>Select Tickets</label>
           </div>
           <% @event.ticket_packages.each do |pkg| %>
-            <div class="form-group">
+            <div class="form-group ticket_package">
               <div class="col-sm-4">
                 <div class='form-control'><%= pkg.ticket_type %></div>
               </div>
@@ -72,15 +72,33 @@
               </div>
             </div>
           <% end %>
-          <div class="form-group">
-          <label class='col-sm-4 control-label text-right'>Total Price</label>
-          <div class="col-sm-4">
-            <div class='form-control total_price'>$0.00</div>
+          <div class="form-group col-sm-12">
+            <label class='col-sm-4 control-label text-right'>Total Price</label>
+            <div class="col-sm-4">
+              <div class='form-control total_price'>$0.00</div>
+            </div>
+            <div class="col-sm-4 text-center">
+              <!--<button type="button" class="btn btn-primary reset" style="width: 100%">Reset Price</button>-->
+            </div>
           </div>
-          <div class="col-sm-4 text-center">
-            <!--<button type="button" class="btn btn-primary reset" style="width: 100%">Reset Price</button>-->
+          <div class="form-group col-sm-12">
+            <label class='col-sm-4 control-label text-right'><%= @event.is_free_event? ? 'No Service Fee' : 'Service Fee'%></label>
+            <div class="col-sm-4">
+              <div class='form-control service_fee'>$0.00</div>
+            </div>
+            <div class="col-sm-4 text-center">
+              <!--<button type="button" class="btn btn-primary reset" style="width: 100%">Reset Price</button>-->
+            </div>
           </div>
-        </div>
+          <div class="form-group col-sm-12">
+            <label class='col-sm-4 control-label text-right'>Grant Total</label>
+            <div class="col-sm-4">
+              <div class='form-control grant_total_price'>$0.00</div>
+            </div>
+            <div class="col-sm-4 text-center">
+              <!--<button type="button" class="btn btn-primary reset" style="width: 100%">Reset Price</button>-->
+            </div>
+          </div>
         </div>
 
       </div>
@@ -104,6 +122,7 @@
             <%=hidden_field_tag :event_id, @event.id %>
             <%=hidden_field_tag :amount %>
             <%=hidden_field_tag "ticket_attributes[]" %>
+            <%=hidden_field_tag "ticket_packages[]" %>
 
             <div class="col-md-12 user-details-section">
               <div class="form-group">
@@ -173,17 +192,16 @@
           new_price = (ticket * price) + total_price;
           $(".total_price").text("$"+new_price.toFixed(2));
           total_tickets += ticket;
-          all_tickets.push({"ticket_package_id":package_id, "count": ticket});
-          console.log(ticket+"df");
+          all_tickets.push({"ticket_package_id":package_id, "count": ticket, "required_tickets": parseFloat(ticket), "price" : price});
         }
       });
       $('[name="ticket_attributes[]"]').val(JSON.stringify(all_tickets));
-
+      $('[name="ticket_packages[]"]').val(JSON.stringify(all_tickets));
       //Check if tickets are available
       $.ajax({
         url: "/charges/validate_tickets_count",
         type: "GET",
-        data: {"ticket_attributes" : $('[name="ticket_attributes[]"]').val()},
+        data: {"ticket_attributes" : $('[name="ticket_attributes[]"]').val(), "event_id" : "<%= @event.id %>"},
         dataType: "json",
         success: function(data) {
           $("#error_box").text('');
@@ -193,6 +211,26 @@
             if (parseFloat($(".total_price").text().replace("$","")) > 0) {
               $(".stripe-section-btn").show();
               $(".free-section-btn").hide();
+              if (data['is_free_event']){
+                $(".grant_total_price").text($(".total_price").text())
+              } else if (data['is_tax_by_creator']) {
+                $(".grant_total_price").text($(".total_price").text())
+              } else {
+                service_fee = 0;
+                $('.ticket_package').each(function() {
+                  var currentSelect = $(this);
+                  
+                  if (currentSelect.find('select').val() != ''){
+                    one_price = parseFloat(currentSelect.find('.price').text().replace("$",""));
+                    quantity = parseFloat(currentSelect.find('select').val());
+                    single_fee = (one_price * 1.25 / 100.0) + 0.60
+                    service_fee = service_fee + (single_fee*quantity)
+                  }
+                });
+                $(".service_fee").text("$"+service_fee.toFixed(2))
+                total_price_with_tax = parseFloat($(".total_price").text().replace("$","")) + service_fee;
+                $(".grant_total_price").text("$"+total_price_with_tax.toFixed(2))
+              }
             }
             else {
               $(".stripe-section-btn").hide();
@@ -222,9 +260,9 @@
     }
 
     function set_stripe_price(){
-      var pp = parseFloat($(".total_price").text().replace("$",""));
+      var pp = parseFloat($(".grant_total_price").text().replace("$",""));
       $("#amount").val(pp);
-      StripeCheckout.__app.configurations.button0.amount = parseFloat($(".total_price").text().replace("$",""))*100;
+      StripeCheckout.__app.configurations.button0.amount = parseFloat($(".grant_total_price").text().replace("$",""))*100;
     }
 
 
