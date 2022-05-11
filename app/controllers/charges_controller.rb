@@ -101,7 +101,7 @@ class ChargesController < ApplicationController
 
 
   def create_temp_user(params)
-    email = params[:email].present? ? params[:email] : params[:stripeEmail]
+    email = params[:email].present? ? params[:email].downcase : params[:stripeEmail].downcase
     first_name = params[:first_name].present? ? params[:first_name] : "Anonymous"
     last_name = params[:last_name].present? ? params[:last_name] : "User"
     user = User.find_by(email: email)
