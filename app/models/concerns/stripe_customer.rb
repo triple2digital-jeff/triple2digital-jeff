@@ -98,7 +98,13 @@ class StripeCustomer
 
     begin
       puts "test #{total_amount}"
-
+      stripe_charge = Stripe::Charge.create({
+                      amount: total_amount.to_i,
+                      currency: 'usd',
+                      customer: self.user.stripe_token,
+                      description: "user id => #{self.user.id} and owner_id => #{self.owner.id} and event_id => #{self.event.id}",
+                      capture: true
+                  })
       Charge.create!(
           total_amount: total_amount,
           amount: actual_amount,
@@ -107,7 +113,7 @@ class StripeCustomer
           user_id: self.user.id,
           owner_id: self.owner.id,
           event_id: self.event.id,
-          stripe_response: 'web_checkout',
+          stripe_response: stripe_charge,
           vc_code: params['event']['voucher_code'],
           vc_amount: vc_amount
       )
