@@ -15,7 +15,7 @@ class StripeCustomer
     vc_amount = 0
     params['event']['ticket_packages'].each do |package|
       if package['required_tickets'].present?
-        single_fee = (package['price'] * 1.25 / 100.0) + 0.60
+        single_fee = (package['price'] * 4.4 / 100.0) + 0.80
         company_share = company_share + single_fee*package['required_tickets']
         total = total + (package['price']*package['required_tickets'])
       end
@@ -78,7 +78,7 @@ class StripeCustomer
     vc_amount = 0
     params['event']['ticket_packages'].each do |package|
       if package['required_tickets'].present?
-        single_fee = (package['price'] * 1.25 / 100.0) + 0.60
+        single_fee = (package['price'] * 4.4 / 100.0) + 0.80
         company_share = company_share + single_fee*package['required_tickets']
         total = total + (package['price']*package['required_tickets'])
       end
