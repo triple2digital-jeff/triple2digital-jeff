@@ -56,7 +56,12 @@ class Api::V1::UsersController < ApplicationController
 
   # DELETE /users/1
   def destroy
-    @user.destroy
+    if @user.events.upcoming.present?
+      render :json => {:error => "Please delete your upcoming events first."}, :status => :unprocessable_entity
+    else
+      @user.destroy
+      render json: {success: 'Deleted'}, status: :ok
+    end
   end
 
   def update_password
